@@ -20,7 +20,7 @@ class LoginViewModel : ViewModel()
 
     fun onPasswordChange(newPsw: String)
     {
-        _uiState.update { it.copy(email = newPsw, passwordError = null) }
+        _uiState.update { it.copy(password = newPsw, passwordError = null) }
     }
 
     private fun validar()
@@ -37,12 +37,13 @@ class LoginViewModel : ViewModel()
         val emailValido = _uiState.value.email.isNotBlank()
                 && Patterns.EMAIL_ADDRESS.matcher(_uiState.value.email).matches()
 
+        // No tengo idea, pero creo que isNotBlank funciona
         val paswValida = _uiState.value.password.isNotBlank()
-                && _uiState.value.password.length>8
+                && _uiState.value.password.length>=8
 
         if(!emailValido)
         {
-            _uiState.update { it.copy(emailError = "Correo electronico invalido") }
+            _uiState.update { it.copy(emailError = "Correo electrónico invalido") }
         }
 
         if(!paswValida)
