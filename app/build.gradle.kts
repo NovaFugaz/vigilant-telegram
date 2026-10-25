@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.bexai.bexainventory"
+    namespace = "com.bexai.bexaiinventory"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.bexai.bexainventory"
+        applicationId = "com.bexai.bexaiinventory"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

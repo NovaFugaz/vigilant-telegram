@@ -1,20 +1,18 @@
-package com.bexai.bexainventory
+package com.bexai.bexaiinventory
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.bexai.bexainventory.ui.theme.BexAInventarioTheme
-import com.bexai.bexainventory.ui.view.LoginScreen
-import com.bexai.bexainventory.viewmodel.LoginViewModel
+import com.bexai.bexaiinventory.presentation.ui.theme.BexAInventarioTheme
+import com.bexai.bexaiinventory.presentation.ui.screens.LoginScreen
+import com.bexai.bexaiinventory.presentation.viewmodel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

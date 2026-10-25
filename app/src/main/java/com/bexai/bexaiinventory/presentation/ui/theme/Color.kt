@@ -1,4 +1,4 @@
-package com.bexai.bexainventory.ui.theme
+package com.bexai.bexaiinventory.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

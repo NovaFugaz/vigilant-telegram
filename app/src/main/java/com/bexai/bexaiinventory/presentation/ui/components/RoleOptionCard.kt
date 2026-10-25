@@ -1,4 +1,4 @@
-package com.bexai.bexainventory.ui.components
+package com.bexai.bexaiinventory.presentation.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
