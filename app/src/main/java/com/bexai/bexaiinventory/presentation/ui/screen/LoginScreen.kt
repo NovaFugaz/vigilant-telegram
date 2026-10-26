@@ -1,4 +1,4 @@
-package com.bexai.bexaiinventory.presentation.ui.screens
+package com.bexai.bexaiinventory.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

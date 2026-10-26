@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.bexai.bexaiinventory.presentation.ui.theme.BexAInventarioTheme
-import com.bexai.bexaiinventory.presentation.ui.screens.LoginScreen
+import com.bexai.bexaiinventory.presentation.ui.screen.LoginScreen
 import com.bexai.bexaiinventory.presentation.viewmodel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
