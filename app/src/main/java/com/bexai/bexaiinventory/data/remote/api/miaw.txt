@@ -1,0 +1,2 @@
+Acá irían las interfaces de retrofit cuando toque.
+Tipo ApiService.kt.

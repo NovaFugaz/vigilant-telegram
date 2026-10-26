@@ -1,0 +1,2 @@
+Acá van los DTO de red.
+Tipo, Cosas que manejen respuestas del servidor directamente.
