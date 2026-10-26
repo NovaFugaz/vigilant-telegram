@@ -16,5 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BexA Inventario"
+rootProject.name = "BexAI Inventario"
 include(":app")
