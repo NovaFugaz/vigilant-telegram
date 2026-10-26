@@ -1,4 +1,4 @@
-package com.bexai.bexainventory
+package com.bexai.bexaiinventory
 
 import org.junit.Test
 

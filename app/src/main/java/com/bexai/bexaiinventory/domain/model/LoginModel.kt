@@ -1,4 +1,4 @@
-package com.bexai.bexainventory.model
+package com.bexai.bexaiinventory.domain.model
 
 data class LoginModel(
     val email: String = "",

@@ -1,16 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.bexai.bexainventory"
+    namespace = "com.bexai.bexaiinventory"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.bexai.bexainventory"
+        applicationId = "com.bexai.bexaiinventory"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
@@ -52,4 +54,14 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }

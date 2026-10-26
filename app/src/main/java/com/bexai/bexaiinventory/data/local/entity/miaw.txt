@@ -1,0 +1,2 @@
+// Acá van las entidades de room, uwu
+// Los DTO locales iwal.

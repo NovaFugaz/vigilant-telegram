@@ -1,8 +1,8 @@
-package com.bexai.bexainventory.viewmodel
+package com.bexai.bexaiinventory.presentation.viewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
-import com.bexai.bexainventory.model.LoginModel
+import com.bexai.bexaiinventory.domain.model.LoginModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

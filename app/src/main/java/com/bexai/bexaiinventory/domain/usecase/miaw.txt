@@ -1,0 +1,3 @@
+// Acá va la lógica de negocio.
+// Básicamente nos sirve para decir "ok, ¿qué quiero hacer?"
+// Get/Set/Save/Update, etc.
