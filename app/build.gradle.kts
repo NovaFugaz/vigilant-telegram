@@ -55,6 +55,17 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    // Navegación
+    // Este me tiró error pero estaba bien, tuve que tirar un sync project with gradle files
+    // y/o siempre puedes invalidar caches o reiniciar el android studio.
+    // Las caché son horribles, las odio. (Nacchi)
+    implementation(libs.androidx.navigation.compose)
+
+    // Esto es exclusivamente porque los íconos, heavy sigh
+    // Este error no nos lo sacamos todavía, pero voy a buscar alternativas.
+    // Por último tiro los íconos que usaremos a los resources.
+    implementation(libs.androidx.compose.material.icons.extended)
+
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
