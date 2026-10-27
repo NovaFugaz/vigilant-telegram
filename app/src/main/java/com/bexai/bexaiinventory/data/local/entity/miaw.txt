@@ -1,2 +1,5 @@
 // Acá van las entidades de room, uwu
 // Los DTO locales iwal.
+
+// le puse Operador, pero bueno si eso se le cambia
+// a entity o no se
