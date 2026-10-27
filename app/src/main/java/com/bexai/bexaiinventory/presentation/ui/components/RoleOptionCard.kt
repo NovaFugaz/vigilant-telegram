@@ -3,6 +3,7 @@ package com.bexai.bexaiinventory.presentation.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
@@ -20,64 +22,94 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
+/*Es basicamente lo mismo, pero le quite el tag, igualmente deje
+* tu version abajo por si los quieres unir
+* y en si porque lo puse en un enum*/
 @Composable
 fun RoleOptionCard(
     title: String,
-    tag: String,
     selected: Boolean,
     onClick: () -> Unit
-){
-    // Deberíamos mover esto a un theme propio de la app una vez que tengamos bien decidido el esquema de colores completo
-    val borderColor = if (selected) Color(0xFFF97316) else Color(0xFFE2E8F0)
-    val backgroundColor = if (selected) Color(0xFFFFF7ED) else Color.White
+) {
+    val borderColor = if (selected) MaterialTheme.colorScheme.primary
+    else MaterialTheme.colorScheme.outlineVariant
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(2.dp, borderColor),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor)
-    ){
+        border = BorderStroke(if (selected) 2.dp else 1.dp, borderColor)
+    ) {
         Row(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically){
-                RadioButton(
-                    selected = selected,
-                    onClick = onClick,
-                    colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFF97316))
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = title,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1E293B)
-                )
-            }
+            RadioButton(selected = selected, onClick = onClick)
+            Text(text = title)
         }
     }
-
-    // Etiqueta secundaria (voy a dejar esto acá, pero estoy pensando si lo sacamos.
-    // Like, el rol debería estar seleccionado de sistema desde ya.
-
-    Surface(
-        color = if(selected) Color(0xFFFFEDD5) else Color(0xFFF1F5F9),
-        shape = RoundedCornerShape(4.dp)
-    ) {
-        Text(
-            text = tag,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            fontWeight = FontWeight.Bold,
-            fontSize = 10.sp,
-            color = if(selected) Color(0xFFC2410C) else Color(0xFF64748B)
-        )
-    }
 }
+
+//@Composable
+//fun RoleOptionCard(
+//    title: String,
+//    tag: String,
+//    selected: Boolean,
+//    onClick: () -> Unit
+//){
+//    // Deberíamos mover esto a un theme propio de la app una vez que tengamos bien decidido el esquema de colores completo
+//    val borderColor = if (selected) Color(0xFFF97316) else Color(0xFFE2E8F0)
+//    val backgroundColor = if (selected) Color(0xFFFFF7ED) else Color.White
+//
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .clickable { onClick() },
+//        shape = RoundedCornerShape(12.dp),
+//        border = BorderStroke(2.dp, borderColor),
+//        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+//    ){
+//        Row(
+//            modifier = Modifier
+//                .padding(16.dp)
+//                .fillMaxWidth(),
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            Row(verticalAlignment = Alignment.CenterVertically){
+//                RadioButton(
+//                    selected = selected,
+//                    onClick = onClick,
+//                    colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFF97316))
+//                )
+//                Spacer(modifier = Modifier.width(8.dp))
+//                Text(
+//                    text = title,
+//                    fontWeight = FontWeight.Bold,
+//                    color = Color(0xFF1E293B)
+//                )
+//            }
+//        }
+//    }
+//
+//    // Etiqueta secundaria (voy a dejar esto acá, pero estoy pensando si lo sacamos.
+//    // Like, el rol debería estar seleccionado de sistema desde ya.
+//
+//    Surface(
+//        color = if(selected) Color(0xFFFFEDD5) else Color(0xFFF1F5F9),
+//        shape = RoundedCornerShape(4.dp)
+//    ) {
+//        Text(
+//            text = tag,
+//            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+//            fontWeight = FontWeight.Bold,
+//            fontSize = 10.sp,
+//            color = if(selected) Color(0xFFC2410C) else Color(0xFF64748B)
+//        )
+//    }
+//}

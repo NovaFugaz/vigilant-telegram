@@ -1,56 +1,76 @@
 package com.bexai.bexaiinventory.presentation.viewmodel
 
+import android.app.Application
 import android.util.Patterns
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.bexai.bexaiinventory.data.local.AppDataBase
 import com.bexai.bexaiinventory.domain.model.LoginModel
+import com.bexai.bexaiinventory.domain.model.Rol
+import com.bexai.bexaiinventory.domain.repository.OperadorRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel()
+// se lo copie al freddy
+class LoginViewModel(application: Application): AndroidViewModel(application)
 {
+    private val repository = OperadorRepository(
+        AppDataBase.getDatabase(application).operadorDao()
+    )
     private val _uiState = MutableStateFlow(LoginModel())
-    val uiState : StateFlow<LoginModel> = _uiState.asStateFlow()
+    val uiState: StateFlow<LoginModel> = _uiState.asStateFlow()
 
-    fun onEmailChange(newEmail: String)
-    {
-        _uiState.update { it.copy(email = newEmail, emailError = null) }
+    // esto es solo que lo explique en el dao, para la funcion contar()
+    init {
+        viewModelScope.launch { repository.datitos() }
     }
 
-    fun onPasswordChange(newPsw: String)
-    {
-        _uiState.update { it.copy(password = newPsw, passwordError = null) }
+    // codigo del funcionario
+    fun onCodigoChange(nuevoC: String){
+        _uiState.update { it.copy(codigo = nuevoC.uppercase().trim(), codigoError = null) }
     }
 
-    private fun validar()
-    {
-        val emailValido = _uiState.value.email.isNotBlank()
-                && Patterns.EMAIL_ADDRESS.matcher(_uiState.value.email).matches()
-
-        val paswValida = _uiState.value.password.isNotBlank()
-                && _uiState.value.password.length>8
+    // para el pin
+    fun onPinChange(nuevoP: String){
+        val pin = nuevoP.filter { it.isDigit() }.take(6)
+        _uiState.update { it.copy(pin = pin, pinError = null) }
     }
 
-    fun registro()
-    {
-        val emailValido = _uiState.value.email.isNotBlank()
-                && Patterns.EMAIL_ADDRESS.matcher(_uiState.value.email).matches()
+    // para el rol
+    fun onRolChange(rol: Rol){
+        _uiState.update { it.copy(rol = rol, rolError = null) }
+    }
 
-        // No tengo idea, pero creo que isNotBlank funciona
-        val paswValida = _uiState.value.password.isNotBlank()
-                && _uiState.value.password.length>=8
 
-        if(!emailValido)
-        {
-            _uiState.update { it.copy(emailError = "Correo electrónico invalido") }
+    fun validar(){
+        val estado = _uiState.value
+
+        if(estado.codigo.isBlank()) {
+            _uiState.update { it.copy(codigoError = "Ingrese su código de operador") }
+            return
         }
 
-        if(!paswValida)
-        {
-            _uiState.update { it.copy(passwordError = "La contraseña debe ser tener al menos 8 caracteres") }
+        // creo que era 6 digitos en el figma ??? creo que no se especificaba
+        if(estado.pin.length != 6) {
+            _uiState.update { it.copy(pinError = "El PIN debe tener 6 dígitos") }
+            return
+        }
+
+        viewModelScope.launch {
+            val operador = repository.find(estado.codigo)
+            when {
+                operador == null ->
+                    _uiState.update { it.copy(codigoError = "Operador no encontrado") }
+                operador.pin != estado.pin ->
+                    _uiState.update { it.copy(pinError = "PIN incorrecto") }
+                operador.rol != estado.rol ->
+                    _uiState.update { it.copy(rolError = "Código de operador no registrado") }
+                else ->
+                    _uiState.update { it.copy(loginExitoso = true) }
+            }
         }
     }
-
-
 }
