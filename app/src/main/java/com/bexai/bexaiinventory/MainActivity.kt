@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.bexai.bexaiinventory.presentation.navigation.AppNavigation
 import com.bexai.bexaiinventory.presentation.ui.theme.BexAInventarioTheme
-import com.bexai.bexaiinventory.presentation.ui.view.LoginScreen
-import com.bexai.bexaiinventory.presentation.viewmodel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +20,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             BexAInventarioTheme {
                 AppNavigation()
-
             }
         }
     }

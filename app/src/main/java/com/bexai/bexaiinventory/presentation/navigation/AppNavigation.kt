@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bexai.bexaiinventory.presentation.ui.view.HomeScreen
-import com.bexai.bexaiinventory.presentation.ui.view.LoginScreen
+import com.bexai.bexaiinventory.presentation.ui.screen.LoginScreen
+import com.bexai.bexaiinventory.presentation.ui.screen.MainScreen
 
 object Rutas {
     const val LOGIN = "login"
@@ -29,7 +29,7 @@ fun AppNavigation() {
         }
 
         composable(Rutas.HOME) {
-            HomeScreen()
+            MainScreen()
         }
     }
 }
