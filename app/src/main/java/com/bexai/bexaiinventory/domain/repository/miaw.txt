@@ -1,2 +1,4 @@
 Acá van las interfaces [acción]Repository.kt
 Esto es como lo vimos con el Freddy el otro día.
+
+No se que esta enseñando el freddy
