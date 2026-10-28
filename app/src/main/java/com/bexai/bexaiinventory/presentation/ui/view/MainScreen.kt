@@ -1,4 +1,4 @@
-package com.bexai.bexaiinventory.presentation.ui.screen
+package com.bexai.bexaiinventory.presentation.ui.view
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon

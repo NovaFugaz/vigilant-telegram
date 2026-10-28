@@ -1,4 +1,4 @@
-package com.bexai.bexaiinventory.presentation.ui.screen
+package com.bexai.bexaiinventory.presentation.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,11 +11,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 // Pantalla tipo para poder probar la navegación.
@@ -36,6 +34,8 @@ fun UnderConstructionScreen(title: String) {
             Icon(
                 // Me estresa que esto sea minúscula = mayúscula.
                 // Tenía un error en el imageVector y era porque había puesto ImageVector (mayúscula)
+
+                // nah kotlin te odio, y desarrollo movil el peor ramo
                 imageVector = Icons.Default.Build,
                 contentDescription = null,
                 modifier = Modifier.padding(bottom = 64.dp),

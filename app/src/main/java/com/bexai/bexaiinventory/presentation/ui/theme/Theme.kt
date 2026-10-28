@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 private val LightColorScheme = lightColorScheme(
     primary = NaranjaIntenso,
     onPrimary = Color.White,
-    background = FonditoLindo,
+    background = FonditoLindo, // este es para las demas pantallas
     surface = Color.White,
     onSurface = TextoNegro
 )

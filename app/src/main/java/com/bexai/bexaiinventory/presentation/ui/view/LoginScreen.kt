@@ -1,4 +1,4 @@
-package com.bexai.bexaiinventory.presentation.ui.screen
+package com.bexai.bexaiinventory.presentation.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +43,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Inicio de Sesion", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Inicio de Sesión", fontSize = 32.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(24.dp))
 
         FormTextField(
