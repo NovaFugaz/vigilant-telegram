@@ -16,6 +16,7 @@ fun FormTextField(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     error: String? = null,
+    enabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ){
     OutlinedTextField(
@@ -24,6 +25,7 @@ fun FormTextField(
         label = { Text(label) },
         placeholder = { if (placeholder != null) Text(placeholder) },
         isError = error != null,
+        enabled = enabled,
 
         supportingText = {
             if (error != null) Text(text = error, color = MaterialTheme.colorScheme.error)

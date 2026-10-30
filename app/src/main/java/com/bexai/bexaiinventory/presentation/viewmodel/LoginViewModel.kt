@@ -8,6 +8,7 @@ import com.bexai.bexaiinventory.data.local.AppDataBase
 import com.bexai.bexaiinventory.domain.model.LoginModel
 import com.bexai.bexaiinventory.domain.model.Rol
 import com.bexai.bexaiinventory.domain.repository.OperadorRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,37 +40,32 @@ class LoginViewModel(application: Application): AndroidViewModel(application)
         _uiState.update { it.copy(pin = pin, pinError = null) }
     }
 
-    // para el rol
-    fun onRolChange(rol: Rol){
-        _uiState.update { it.copy(rol = rol, rolError = null) }
-    }
-
-
     fun validar(){
         val estado = _uiState.value
+        if (estado.cargando) return
 
         if(estado.codigo.isBlank()) {
             _uiState.update { it.copy(codigoError = "Ingrese su código de operador") }
             return
         }
 
-        // creo que era 6 digitos en el figma ??? creo que no se especificaba
         if(estado.pin.length != 6) {
             _uiState.update { it.copy(pinError = "El PIN debe tener 6 dígitos") }
             return
         }
 
         viewModelScope.launch {
+            _uiState.update { it.copy(cargando = true) }
+            delay(2500)
+
             val operador = repository.find(estado.codigo)
             when {
                 operador == null ->
-                    _uiState.update { it.copy(codigoError = "Operador no encontrado") }
+                    _uiState.update { it.copy(cargando = false, codigoError = "Operador no encontrado") }
                 operador.pin != estado.pin ->
-                    _uiState.update { it.copy(pinError = "PIN incorrecto") }
-                operador.rol != estado.rol ->
-                    _uiState.update { it.copy(rolError = "Código de operador no registrado") }
+                    _uiState.update { it.copy(cargando = false, pinError = "PIN incorrecto") }
                 else ->
-                    _uiState.update { it.copy(loginExitoso = true) }
+                    _uiState.update { it.copy(cargando = false, operador = operador) }
             }
         }
     }

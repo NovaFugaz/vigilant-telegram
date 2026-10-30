@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,16 +31,15 @@ import com.bexai.bexaiinventory.presentation.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen(
     logeado: () -> Unit, viewModel: LoginViewModel = viewModel()
-){
+) {
 
     val estado by viewModel.uiState.collectAsState()
-    LaunchedEffect(estado.loginExitoso) {
-        if (estado.loginExitoso) logeado()
-    }
+    val operador = estado.operador
+    val camposActivos = !estado.cargando && operador == null
 
-    Column(modifier = Modifier.fillMaxSize().
-    background(MaterialTheme.colorScheme.background).
-    padding(24.dp),
+    Column(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -51,7 +51,8 @@ fun LoginScreen(
             onValueChange = { viewModel.onCodigoChange(it) },
             label = "Código de operador",
             placeholder = "OP-0000",
-            error = estado.codigoError
+            error = estado.codigoError,
+            enabled = camposActivos
         )
 
         FormTextField(
@@ -59,41 +60,36 @@ fun LoginScreen(
             onValueChange = { viewModel.onPinChange(it) },
             label = "PIN (6 dígitos)",
             error = estado.pinError,
+            enabled = camposActivos,
             visualTransformation = PasswordVisualTransformation()
         )
 
         Spacer(Modifier.height(16.dp))
 
-        Text(text = "Seleccione su perfil",
-            modifier = Modifier.fillMaxWidth(),
-            fontWeight = FontWeight.SemiBold
-        )
+        when {
+            estado.cargando -> {
+                CircularProgressIndicator()
+                Spacer(Modifier.padding(10.dp))
+                Text("Buscando operador...")
+            }
 
-        Spacer(Modifier.height(8.dp))
+            operador != null -> {
+                RoleOptionCard(
+                    title = operador.rol.cargo,
+                    subtitle = "${operador.nombre} · ${operador.codigo}",
+                    selected = true
+                )
+                Spacer(Modifier.height(16.dp))
+                PrimaryButton(text = "Continuar", onClick = logeado)
+            }
 
-        // las tarjetitas de los roles
-        Rol.entries.forEach { rol ->
-            RoleOptionCard(
-                title = rol.cargo,
-                selected = estado.rol == rol,
-                onClick = { viewModel.onRolChange(rol) }
-            )
-            Spacer(Modifier.height(8.dp))
+            // estado inicial
+            else -> {
+                PrimaryButton(
+                    text = "Iniciar Sesión",
+                    onClick = { viewModel.validar() }
+                )
+            }
         }
-
-        if (estado.rolError != null) {
-            Text(
-                text = estado.rolError!!,
-                color = MaterialTheme.colorScheme.error,
-                fontSize = 13.sp
-            )
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        PrimaryButton(
-            text = "Iniciar Sesión",
-            onClick = { viewModel.validar() }
-        )
     }
 }
