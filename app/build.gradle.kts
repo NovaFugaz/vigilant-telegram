@@ -84,4 +84,6 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.mlkit.vision)
 
+    //Fecha-Hora
+    implementation(libs.kotlinx.datetime)
 }
