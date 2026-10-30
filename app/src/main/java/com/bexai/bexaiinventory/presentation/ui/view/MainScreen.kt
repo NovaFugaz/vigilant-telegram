@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.bexai.bexaiinventory.presentation.ui.components.TopBar
 import com.bexai.bexaiinventory.presentation.ui.navigation.AppNavHost
 import com.bexai.bexaiinventory.presentation.ui.navigation.items
 
@@ -17,12 +18,14 @@ import com.bexai.bexaiinventory.presentation.ui.navigation.items
 fun MainScreen() {
     val navController = rememberNavController()
 
+    val navBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentRoute = navBackStackEntry?.destination?.route
+    val titulo = items.find { it.route == currentRoute }?.title ?: "Inicio"
+
     Scaffold(
+        topBar = { TopBar(subtitle = titulo) },
         bottomBar = {
             NavigationBar {
-                val navBackStackEntry = navController.currentBackStackEntryAsState().value
-                val currentRoute = navBackStackEntry?.destination?.route
-
                 items.forEach { screen ->
                     NavigationBarItem(
                         icon = { Icon(screen.icon, contentDescription = screen.title) },
