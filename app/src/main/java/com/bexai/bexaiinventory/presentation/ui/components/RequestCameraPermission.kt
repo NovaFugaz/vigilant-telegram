@@ -1,4 +1,4 @@
-package com.bexai.bexaiinventory.presentation.ui.components
+ package com.bexai.bexaiinventory.presentation.ui.components
 
 import android.Manifest
 import android.content.pm.PackageManager
