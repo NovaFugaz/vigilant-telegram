@@ -16,7 +16,9 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     background = FonditoLindo, // este es para las demas pantallas
     surface = Color.White,
-    onSurface = TextoNegro
+    onSurface = TextoNegro,
+    onBackground = NaranjaIntenso,
+    secondary = fonditoSplash
 )
 
 //private val DarkColorScheme = darkColorScheme(
