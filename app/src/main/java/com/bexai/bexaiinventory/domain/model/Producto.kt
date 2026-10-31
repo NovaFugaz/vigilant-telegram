@@ -7,6 +7,7 @@ data class Producto(
     val descripcion: String,
     val stockTienda: Int,
     val stockMinimo: Int,
+    val unidadMedida: UnidadMedida,
     val valor: Long, // Creo que deberíamos manejarlo, porque a la empresa le gustaría saberlo.
     val Ubicacion: Ubicacion
 ) {
