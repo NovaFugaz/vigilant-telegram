@@ -18,17 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bexai.bexaiinventory.presentation.ui.theme.NaranjaIntenso
 import com.bexai.bexaiinventory.presentation.ui.theme.fonditoSplash
 
 @Composable
-fun TopBar (
+fun TopBar(
     subtitle: String,
     modifier: Modifier = Modifier
-){
+) {
     Row(
         modifier = modifier.fillMaxWidth()
             .background(fonditoSplash)
@@ -36,11 +35,12 @@ fun TopBar (
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.size(40.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(NaranjaIntenso),
-            contentAlignment = Alignment.Center)
-        {
+        Box(
+            modifier = Modifier.size(40.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(NaranjaIntenso),
+            contentAlignment = Alignment.Center
+        ) {
             Text(text = "BX", color = Color.White,
                 fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
         }
@@ -51,8 +51,7 @@ fun TopBar (
                 color = Color.White)
 
             Text(text = subtitle.uppercase(), color = NaranjaIntenso,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold)
+                fontSize = 11.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
