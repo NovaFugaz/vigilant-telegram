@@ -26,10 +26,11 @@ import com.bexai.bexaiinventory.presentation.ui.components.PrimaryButton
 import com.bexai.bexaiinventory.presentation.ui.components.RoleOptionCard
 import com.bexai.bexaiinventory.presentation.ui.components.TopBar
 import com.bexai.bexaiinventory.presentation.viewmodel.LoginViewModel
+import com.bexai.bexaiinventory.domain.model.Rol
 
 @Composable
 fun LoginScreen(
-    logeado: (String) -> Unit,
+    logeado: (String, Rol) -> Unit,
     viewModel: LoginViewModel = viewModel()
 ) {
     val estado by viewModel.uiState.collectAsState()
@@ -89,7 +90,7 @@ fun LoginScreen(
                         selected = true
                     )
                     Spacer(Modifier.height(16.dp))
-                    PrimaryButton(text = "Continuar", onClick = { logeado(operador.codigo) })
+                    PrimaryButton(text = "Continuar", onClick = { logeado(operador.codigo, operador.rol) })
                 }
 
                 else -> {

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 sealed interface JornadaEstado {
     data object Cargando : JornadaEstado
@@ -24,6 +25,10 @@ class JornadaViewModel(
     private val db = AppDataBase.getDatabase(application)
     private val repository = JornadaRepository(db.sucursalDao(), db.jornadaDao())
     private val codigo: String = savedStateHandle["codigo"] ?: ""
+
+    fun terminarJornada() {
+        viewModelScope.launch { repository.terminar(codigo) }
+    }
 
     val estado: StateFlow<JornadaEstado> = repository.jornada(codigo)
         .map { if (it == null) JornadaEstado.SinJornada else JornadaEstado.Iniciada(it) }

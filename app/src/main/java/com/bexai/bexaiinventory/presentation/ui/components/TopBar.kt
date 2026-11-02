@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,7 +27,8 @@ import com.bexai.bexaiinventory.presentation.ui.theme.fonditoSplash
 @Composable
 fun TopBar(
     subtitle: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     Row(
         modifier = modifier.fillMaxWidth()
@@ -53,5 +55,7 @@ fun TopBar(
             Text(text = subtitle.uppercase(), color = NaranjaIntenso,
                 fontSize = 11.sp, fontWeight = FontWeight.Bold)
         }
+        Spacer(Modifier.weight(1f))
+        actions()
     }
 }
