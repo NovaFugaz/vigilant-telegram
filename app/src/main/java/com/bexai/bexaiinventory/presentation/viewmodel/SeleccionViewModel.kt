@@ -12,6 +12,8 @@ import com.bexai.bexaiinventory.domain.repository.JornadaRepository
 import com.bexai.bexaiinventory.domain.repository.OperadorRepository
 import kotlinx.coroutines.launch
 
+// Es el selector de Turno? Deberíamos llamarlo SeleccionTurnoViewModel (netamente para que no haya atado con otros selectores)
+
 data class AsignacionUi(
     val sucursalId: Int,
     val sucursalNombre: String,
