@@ -13,8 +13,10 @@ interface SucursalDao {
     @Query("SELECT * FROM sucursales ORDER BY nombre")
     fun obtenerTodos(): Flow<List<Sucursal>>
 
-    // lo mismo para contar() en operadorDao
-    @Query("SELECT COUNT(*) FROM jornadas")
+    @Query("SELECT * FROM sucursales WHERE id = :id LIMIT 1")
+    suspend fun obtenerPorId(id: Int): Sucursal?
+
+    @Query("SELECT COUNT(*) FROM sucursales")
     suspend fun contarSucursal(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

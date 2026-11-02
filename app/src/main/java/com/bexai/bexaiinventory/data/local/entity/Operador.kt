@@ -3,6 +3,7 @@ package com.bexai.bexaiinventory.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bexai.bexaiinventory.domain.model.Rol
+import com.bexai.bexaiinventory.domain.model.Turno
 
 @Entity(tableName = "operadores")
 data class Operador(
@@ -10,5 +11,7 @@ data class Operador(
     @PrimaryKey val codigo: String,
     val nombre: String,
     val pin: String,
-    val rol: Rol
+    val rol: Rol,
+    val sucursalId: Int,
+    val turno: Turno
 )
