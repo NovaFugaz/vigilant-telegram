@@ -7,50 +7,53 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.bexai.bexaiinventory.data.local.AppDataBase
-import com.bexai.bexaiinventory.data.local.entity.Sucursal
 import com.bexai.bexaiinventory.domain.model.Turno
 import com.bexai.bexaiinventory.domain.repository.JornadaRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import com.bexai.bexaiinventory.domain.repository.OperadorRepository
 import kotlinx.coroutines.launch
+
+data class AsignacionUi(
+    val sucursalId: Int,
+    val sucursalNombre: String,
+    val direccion: String,
+    val turno: Turno
+)
 
 class SeleccionViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDataBase.getDatabase(application)
-    private val repository = JornadaRepository(db.sucursalDao(), db.jornadaDao())
+    private val jornadaRepo = JornadaRepository(db.sucursalDao(), db.jornadaDao())
+    private val operadorRepo = OperadorRepository(db.operadorDao())
 
-    val sucursales: StateFlow<List<Sucursal>> = repository.sucursal()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-    var sucursalId by mutableStateOf<Int?>(null)
+    var asignacion by mutableStateOf<AsignacionUi?>(null)
         private set
-    var turno by mutableStateOf<Turno?>(null)
+    var error by mutableStateOf<String?>(null)
         private set
 
-    val puedeComenzar: Boolean get() = sucursalId != null && turno != null
+    val puedeComenzar: Boolean get() = asignacion != null
 
-    init {
-        viewModelScope.launch { repository.datitosSurcursal() }
-    }
-
-    fun precarga(operadorCodigo: String) {
+    fun cargar(operadorCodigo: String) {
         viewModelScope.launch {
-            val previa = repository.jornadaGuardada(operadorCodigo)
-            if (previa != null && sucursalId == null) {
-                sucursalId = previa.sucursalId
-                turno = previa.turno
+            jornadaRepo.datitosSurcursal()
+            val operador = operadorRepo.find(operadorCodigo)
+            val sucursal = operador?.let { jornadaRepo.sucursalPorId(it.sucursalId) }
+
+            if (operador == null || sucursal == null) {
+                error = "No tienes un centro de trabajo asignado. Contacta a tu supervisor."
+                return@launch
             }
+            asignacion = AsignacionUi(
+                sucursalId = sucursal.id,
+                sucursalNombre = sucursal.nombre,
+                direccion = sucursal.direccion,
+                turno = operador.turno
+            )
         }
     }
 
-    fun elegirSucursal(id: Int) { sucursalId = id }
-    fun elegirTurno(t: Turno) { turno = t }
-
     fun comenzar(operadorCodigo: String, onListo: () -> Unit) {
-        val s = sucursalId ?: return
-        val t = turno ?: return
+        val a = asignacion ?: return
         viewModelScope.launch {
-            repository.iniciar(operadorCodigo, s, t)
+            jornadaRepo.iniciar(operadorCodigo, a.sucursalId, a.turno)
             onListo()
         }
     }

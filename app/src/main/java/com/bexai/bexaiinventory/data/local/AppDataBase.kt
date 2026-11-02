@@ -13,7 +13,7 @@ import com.bexai.bexaiinventory.data.local.entity.Sucursal
 
 @Database(
     entities = [Operador::class, Sucursal::class, Jornada::class],
-    version = 6, exportSchema = false
+    version = 7, exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun operadorDao(): OperadorDao
