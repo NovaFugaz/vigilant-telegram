@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.bexai.bexaiinventory.data.local.AppDataBase
+import com.bexai.bexaiinventory.domain.model.Rol
 import com.bexai.bexaiinventory.domain.model.Turno
 import com.bexai.bexaiinventory.domain.repository.JornadaRepository
 import com.bexai.bexaiinventory.domain.repository.OperadorRepository
@@ -14,11 +15,14 @@ import kotlinx.coroutines.launch
 
 // Es el selector de Turno? Deberíamos llamarlo SeleccionTurnoViewModel (netamente para que no haya atado con otros selectores)
 
+// ando diciendo puras weas, si es turno y lo voy a cambiar twin
+// al final el operador tiene un trabajo asignado y realiza el inicio de la jornada laboral, con el turno correspondiente
 data class AsignacionUi(
     val sucursalId: Int,
     val sucursalNombre: String,
     val direccion: String,
-    val turno: Turno
+    val turno: Turno,
+    val rol: Rol
 )
 
 class SeleccionViewModel(application: Application) : AndroidViewModel(application) {
@@ -47,16 +51,17 @@ class SeleccionViewModel(application: Application) : AndroidViewModel(applicatio
                 sucursalId = sucursal.id,
                 sucursalNombre = sucursal.nombre,
                 direccion = sucursal.direccion,
-                turno = operador.turno
+                turno = operador.turno,
+                rol = operador.rol
             )
         }
     }
 
-    fun comenzar(operadorCodigo: String, onListo: () -> Unit) {
+    fun comenzar(operadorCodigo: String, onListo: (Rol) -> Unit) {
         val a = asignacion ?: return
         viewModelScope.launch {
             jornadaRepo.iniciar(operadorCodigo, a.sucursalId, a.turno)
-            onListo()
+            onListo(a.rol)
         }
     }
 }

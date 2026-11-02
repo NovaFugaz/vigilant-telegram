@@ -13,6 +13,7 @@ class JornadaRepository(
     fun sucursal() = sucursalDao.obtenerTodos()
     fun jornada(codigo: String) = jornadaDao.obtenerJornadaActual(codigo)
 
+    suspend fun terminar(codigo: String) = jornadaDao.terminarJornada(codigo)
     suspend fun sucursalPorId(id: Int): Sucursal? = sucursalDao.obtenerPorId(id)   // <- nueva
 
     suspend fun jornadaGuardada(codigo: String): Jornada? = jornadaDao.obtenerJornada(codigo)

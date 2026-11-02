@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.bexai.bexaiinventory.domain.model.Rol
 import com.bexai.bexaiinventory.presentation.ui.components.PrimaryButton
 import com.bexai.bexaiinventory.presentation.ui.components.TopBar
 import com.bexai.bexaiinventory.presentation.viewmodel.SeleccionViewModel
@@ -34,7 +35,7 @@ import com.bexai.bexaiinventory.presentation.viewmodel.SeleccionViewModel
 @Composable
 fun SeleccionSucursalScreen(
     operadorCodigo: String,
-    onJornadaIniciada: () -> Unit,
+    onJornadaIniciada: (Rol) -> Unit,
     onCerrarSesion: () -> Unit,
     viewModel: SeleccionViewModel = viewModel()
 ) {
@@ -84,9 +85,6 @@ fun SeleccionSucursalScreen(
                 enabled = viewModel.puedeComenzar,
                 onClick = { viewModel.comenzar(operadorCodigo, onJornadaIniciada) }
             )
-            TextButton(onClick = onCerrarSesion) {
-                Text("No soy yo / Cerrar sesión")
-            }
             Spacer(modifier = Modifier.height(20.dp))
         }
     }

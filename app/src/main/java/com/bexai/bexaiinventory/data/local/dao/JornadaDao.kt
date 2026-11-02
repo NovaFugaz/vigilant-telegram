@@ -14,6 +14,9 @@ interface JornadaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun guardarJornada(jornada: Jornada)
 
+    @Query("DELETE FROM jornadas WHERE operadorCodigo = :codigo")
+    suspend fun terminarJornada(codigo: String)
+
     // Lectura simple, para precargar la selección
     @Query("SELECT * FROM jornadas WHERE operadorCodigo = :codigo")
     suspend fun obtenerJornada(codigo: String): Jornada?

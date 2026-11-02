@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.bexai.bexaiinventory.presentation.ui.components.ActionSalida
 import com.bexai.bexaiinventory.presentation.ui.components.TopBar
 import com.bexai.bexaiinventory.presentation.ui.navigation.AppNavHost
 import com.bexai.bexaiinventory.presentation.ui.navigation.items
@@ -36,7 +37,7 @@ fun MainScreen(
             CircularProgressIndicator()
         }
 
-        // Sin jornada no se puede ver ni trabajar nada
+        // jornada terminada vuelve al login
         JornadaEstado.SinJornada -> LaunchedEffect(Unit) { onSinJornada() }
 
         is JornadaEstado.Iniciada -> {
@@ -45,7 +46,20 @@ fun MainScreen(
             val titulo = items.find { it.route == currentRoute }?.title ?: "Inicio"
 
             Scaffold(
-                topBar = { TopBar(subtitle = titulo) },
+                topBar = {
+                    TopBar(
+                        subtitle = titulo,
+                        actions = {
+                            ActionSalida(
+                                descripcion = "Terminar jornada",
+                                titulo = "¿Terminar jornada?",
+                                mensaje = "Se cerrará tu jornada y volverás al inicio de sesión.",
+                                textoConfirmar = "Terminar",
+                                onConfirmar = { jornadaViewModel.terminarJornada() }
+                            )
+                        }
+                    )
+                },
                 bottomBar = {
                     NavigationBar {
                         items.forEach { screen ->
