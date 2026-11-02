@@ -6,19 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.bexai.bexaiinventory.data.local.dao.JornadaDao
 import com.bexai.bexaiinventory.data.local.dao.OperadorDao
+import com.bexai.bexaiinventory.data.local.dao.ProductoDao
 import com.bexai.bexaiinventory.data.local.dao.SucursalDao
 import com.bexai.bexaiinventory.data.local.entity.Jornada
 import com.bexai.bexaiinventory.data.local.entity.Operador
+import com.bexai.bexaiinventory.data.local.entity.ProductoEntity
 import com.bexai.bexaiinventory.data.local.entity.Sucursal
 
 @Database(
-    entities = [Operador::class, Sucursal::class, Jornada::class],
-    version = 7, exportSchema = false
+    entities = [Operador::class, Sucursal::class, Jornada::class, ProductoEntity::class],
+    version = 8, exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun operadorDao(): OperadorDao
     abstract fun sucursalDao(): SucursalDao
     abstract fun jornadaDao(): JornadaDao
+
+    abstract fun productoDao(): ProductoDao
 
     /* Android Studio fue creado y desarrollado por Google (basado en el entorno de código abierto IntelliJ IDEA de JetBrains) por favor boombardeen google  */
     companion object {
