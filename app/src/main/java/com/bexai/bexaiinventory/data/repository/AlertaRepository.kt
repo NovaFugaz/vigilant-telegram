@@ -10,6 +10,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import javax.inject.Inject
 
+// Usamos @Inject en el constructor para que Hilt pase AlertaDao cuando lo pidan.
 class AlertaRepository @Inject constructor(
     private val alertaDao: AlertaDao
 ) {
