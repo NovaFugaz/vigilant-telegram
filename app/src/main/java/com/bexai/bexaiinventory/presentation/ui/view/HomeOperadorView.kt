@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,13 +35,12 @@ fun HomeOperadorScreen(
     val m = state.metricas
     val scrollState = rememberScrollState()
 
-    // Contenedor principal que agrupa toda la pantalla y permite scroll
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp) // Espaciado entre secciones
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         // 1. MÉTRICAS
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -67,7 +67,7 @@ fun HomeOperadorScreen(
         // 2. SCANNER
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             SeccionTitulo("Acceso al scanner")
-            PrimaryButton(text = "Abrir Escáner", onClick = onAbrirScanner)
+            PrimaryButton(text = "Abrir Escáner", onClick = onAbrirScanner, modifier = Modifier.fillMaxWidth())
         }
 
         // 3. TAREAS

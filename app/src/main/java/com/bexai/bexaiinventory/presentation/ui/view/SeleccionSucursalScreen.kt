@@ -83,9 +83,11 @@ fun SeleccionSucursalScreen(
             PrimaryButton(
                 text = "Comenzar jornada",
                 enabled = viewModel.puedeComenzar,
-                onClick = { viewModel.comenzar(operadorCodigo, onJornadaIniciada) }
+                onClick = { viewModel.comenzar(operadorCodigo, onJornadaIniciada) },
+                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
+
         }
     }
 }

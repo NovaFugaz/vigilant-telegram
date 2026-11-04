@@ -90,13 +90,13 @@ fun LoginScreen(
                         selected = true
                     )
                     Spacer(Modifier.height(16.dp))
-                    PrimaryButton(text = "Continuar", onClick = { logeado(operador.codigo, operador.rol) })
+                    PrimaryButton(text = "Continuar", onClick = { logeado(operador.codigo, operador.rol) }, modifier = Modifier.fillMaxWidth())
                 }
 
                 else -> {
                     PrimaryButton(
                         text = "Iniciar Sesión",
-                        onClick = { viewModel.validar() }
+                        onClick = { viewModel.validar() }, modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
