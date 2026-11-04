@@ -85,8 +85,8 @@ fun MainScreen(
             ) { innerPadding ->
                 AppNavHost(
                     navController = navController,
-                    modifier = Modifier.padding(innerPadding)
-                )
+                    operadorCodigo = jornadaViewModel.codigo,
+                    modifier = Modifier.padding(innerPadding))
             }
         }
     }

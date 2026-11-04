@@ -24,7 +24,7 @@ class JornadaViewModel(
 ) : AndroidViewModel(application) {
     private val db = AppDataBase.getDatabase(application)
     private val repository = JornadaRepository(db.sucursalDao(), db.jornadaDao())
-    private val codigo: String = savedStateHandle["codigo"] ?: ""
+    val codigo: String = savedStateHandle["codigo"] ?: ""
 
     fun terminarJornada() {
         viewModelScope.launch { repository.terminar(codigo) }

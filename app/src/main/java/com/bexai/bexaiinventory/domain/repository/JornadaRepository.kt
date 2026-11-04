@@ -4,6 +4,7 @@ import com.bexai.bexaiinventory.data.local.dao.JornadaDao
 import com.bexai.bexaiinventory.data.local.dao.SucursalDao
 import com.bexai.bexaiinventory.data.local.entity.Jornada
 import com.bexai.bexaiinventory.data.local.entity.Sucursal
+import com.bexai.bexaiinventory.data.local.seed.MockData
 import com.bexai.bexaiinventory.domain.model.Turno
 
 class JornadaRepository(
@@ -32,6 +33,8 @@ class JornadaRepository(
                     Sucursal(4, "Sucursal Concepción", "Av. ejemplo123")
                 )
             )
+            // las jornadas se siembran después de las sucursales y solo la primera vez
+            MockData.jornadasIniciales.forEach { jornadaDao.guardarJornada(it) }
         }
     }
 }

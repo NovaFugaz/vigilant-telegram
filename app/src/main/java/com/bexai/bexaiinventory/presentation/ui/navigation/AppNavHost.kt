@@ -14,6 +14,7 @@ import com.bexai.bexaiinventory.presentation.ui.view.UnderConstructionScreen
 @Composable
 fun AppNavHost (
     navController: NavHostController,
+    operadorCodigo: String,
     modifier: Modifier = Modifier
 ){
     NavHost(
@@ -22,7 +23,7 @@ fun AppNavHost (
         modifier = modifier
     ){
       composable(Screen.Inicio.route){
-          HomeOperadorScreen()
+          HomeOperadorScreen(operadorCodigo = operadorCodigo)
       }
       composable(Screen.Stock.route) {
           StockCatalogScreen()
