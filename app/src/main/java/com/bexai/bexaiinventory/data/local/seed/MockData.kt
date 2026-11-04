@@ -1,12 +1,37 @@
 package com.bexai.bexaiinventory.data.local.seed
 
 import com.bexai.bexaiinventory.data.local.entity.AlertaEntity
+import com.bexai.bexaiinventory.data.local.entity.MetricasJornadaEntity
 import com.bexai.bexaiinventory.data.local.entity.ProductoEntity
+import com.bexai.bexaiinventory.data.local.entity.TareaEntity
+import com.bexai.bexaiinventory.domain.model.AccionTarea
+import com.bexai.bexaiinventory.data.local.entity.Operador
+import com.bexai.bexaiinventory.data.local.entity.Jornada
+import com.bexai.bexaiinventory.domain.model.Rol
+import com.bexai.bexaiinventory.domain.model.Turno
 
 // me wa permitir dejar esto acá :3
 // esta cuestión debería ser un componente para la evaluación, considerando lo útil que es en reducir código de otro lado, xd.
 
+
 object MockData {
+
+    val operadoresIniciales = listOf(
+        Operador("OP-1001", "Rin Tohsaka",             "123456", Rol.TERRENO,  1, Turno.TARDE),
+        Operador("OP-1002", "Gilgamesh",               "654321", Rol.BODEGA,   1, Turno.MANANA),
+        Operador("OP-1003", "Bate galactico",          "234567", Rol.GERENCIA, 1, Turno.TARDE),
+        Operador("OP-1004", "Emiya Shirou",            "111222", Rol.TERRENO,  1, Turno.MANANA),
+        Operador("OP-1005", "Matou Sakura",            "333444", Rol.TERRENO,  2, Turno.MANANA),
+        Operador("OP-1006", "Artoria Pendragon",       "555666", Rol.BODEGA,   2, Turno.TARDE),
+        Operador("OP-1007", "Illyasviel von Einzbern", "777888", Rol.TERRENO,  3, Turno.TARDE),
+        Operador("OP-1008", "Tohsaka Tokiomi",         "999000", Rol.GERENCIA, 4, Turno.MANANA)
+    )
+
+    private val conJornadaActiva = setOf("OP-1001", "OP-1004", "OP-1005", "OP-1006")
+
+    val jornadasIniciales = operadoresIniciales
+        .filter { it.codigo in conJornadaActiva }
+        .map { Jornada(it.codigo, it.sucursalId, it.turno) }
     val productosIniciales = listOf(
         ProductoEntity(
             sku = "SKU-7704219",
@@ -111,4 +136,38 @@ object MockData {
             horaIso = "11:30:00"
         )
     )
+
+    fun metricasIniciales(codigo: String) = when (codigo) {
+        "OP-1001" -> MetricasJornadaEntity(codigo, 48, 14, 2, 6, 8)   // jornada avanzada, con discrepancias
+        "OP-1004" -> MetricasJornadaEntity(codigo, 92, 7, 0, 7, 8)    // casi terminando, sin incongruencias
+        "OP-1005" -> MetricasJornadaEntity(codigo, 15, 3, 1, 2, 9)    // recién avanzando
+        "OP-1007" -> MetricasJornadaEntity(codigo, 0, 0, 0, 0, 6)     // turno recién iniciado
+        else      -> MetricasJornadaEntity(codigo, 0, 0, 0, 0, 0)     // bodega / gerencia
+    }
+
+    private fun tarea(codigo: String, titulo: String, detalle: String, accion: AccionTarea) =
+        TareaEntity(operadorCodigo = codigo, titulo = titulo, detalle = detalle, accion = accion)
+
+    fun tareasIniciales(codigo: String): List<TareaEntity> = when (codigo) {
+        "OP-1001" -> listOf(
+            tarea(codigo, "Conteo Pasillo: C-03", "42 / 60 SKUs verificados", AccionTarea.CONTINUAR),
+            tarea(codigo, "Recontar Lote: #B892", "Discrepancia detectada (-3 u.)", AccionTarea.REVISAR),
+            tarea(codigo, "Recepción Pallet MP-104", "Muelle 2 · En espera de escaneo", AccionTarea.INICIAR)
+        )
+        "OP-1004" -> listOf(
+            tarea(codigo, "Conteo Pasillo: B-04", "31 / 45 SKUs verificados", AccionTarea.CONTINUAR),
+            tarea(codigo, "Revisar Lote: #D207", "7 SKUs pendientes de revisión", AccionTarea.REVISAR),
+            tarea(codigo, "Recepción Pallet MP-210", "Muelle 1 · En espera de escaneo", AccionTarea.INICIAR)
+        )
+        "OP-1005" -> listOf(
+            tarea(codigo, "Conteo Pasillo: A-02", "9 / 30 SKUs verificados", AccionTarea.CONTINUAR),
+            tarea(codigo, "Recontar Lote: #F118", "Discrepancia detectada (-1 u.)", AccionTarea.REVISAR)
+        )
+        "OP-1007" -> listOf(
+            tarea(codigo, "Conteo Pasillo: D-01", "0 / 38 SKUs verificados", AccionTarea.INICIAR),
+            tarea(codigo, "Conteo Pasillo: D-02", "0 / 52 SKUs verificados", AccionTarea.INICIAR),
+            tarea(codigo, "Recepción Pallet MP-305", "Muelle 3 · En espera de escaneo", AccionTarea.INICIAR)
+        )
+        else -> emptyList()   // bodega / gerencia no tienen tareas de terreno
+    }
 }
