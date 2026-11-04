@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.bexai.bexaiinventory.presentation.ui.view.HomeOperadorScreen
 import com.bexai.bexaiinventory.presentation.ui.view.AlertasScreen
 import com.bexai.bexaiinventory.presentation.ui.view.StockCatalogScreen
 import com.bexai.bexaiinventory.presentation.ui.view.UnderConstructionScreen
@@ -21,7 +22,7 @@ fun AppNavHost (
         modifier = modifier
     ){
       composable(Screen.Inicio.route){
-          UnderConstructionScreen(title = "Inicio")
+          HomeOperadorScreen()
       }
       composable(Screen.Stock.route) {
           StockCatalogScreen()
