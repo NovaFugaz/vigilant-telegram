@@ -19,6 +19,7 @@ import com.bexai.bexaiinventory.presentation.viewmodel.StockViewModel
 
 @Composable
 fun StockCatalogScreen(
+    onAbrirEscaner: () -> Unit = {},
     stockViewModel: StockViewModel = viewModel()
 ) {
     // Escuchamos el estado reactivo desde el ViewModel (conectado a Room)
@@ -42,7 +43,7 @@ fun StockCatalogScreen(
             placeholder = { Text("Buscar SKU, EAN o descripción") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
             trailingIcon = {
-                IconButton(onClick = { /* Acción de escanear */ }) {
+                IconButton(onClick = onAbrirEscaner) {
                     Icon(Icons.Default.QrCodeScanner, contentDescription = null)
                 }
             },
