@@ -66,7 +66,10 @@ fun ScannerScreen(){
     if (hasCameraPermission){
         Box(Modifier.fillMaxSize()) {
             // Llamamos al componente de preview de la cámara
-            CameraPreview()
+            CameraPreview(    onCodigoEscaneado = { codigoDetectado ->
+                codigoLeido = codigoDetectado
+            }
+            )
 
             // El resto de la interfaz.
 
