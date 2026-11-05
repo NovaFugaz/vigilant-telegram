@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.bexai.bexaiinventory.presentation.ui.components.CameraPreview
 
+// te pasaste nacchi, al menos ira bien grupalmente
 @Composable
 fun ScannerScreen(){
     val context = LocalContext.current
@@ -85,7 +86,7 @@ fun ScannerScreen(){
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
                     )
                 }
-            // Tarjeta flotante inferior.
+                // Tarjeta flotante inferior.
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

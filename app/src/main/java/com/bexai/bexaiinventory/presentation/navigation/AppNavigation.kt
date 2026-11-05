@@ -83,7 +83,10 @@ fun AppNavigation() {
 
         // Operador (el que tiene cámara)
         composable(Rutas.HOME_TERRENO, arguments = argCodigo) {
-            MainScreen(onSinJornada = { cerrarSesion(navController) })
+            MainScreen(
+                onSinJornada = { cerrarSesion(navController) },
+                onAbrirEscaner = { navController.navigate(Rutas.SCANNER) }
+            )
         }
 
         // Encargado de bodega
@@ -98,8 +101,10 @@ fun AppNavigation() {
             GerenciaMainScreen(onCerrarSesion = { cerrarSesion(navController) })
         }
 
+        // Scanner
         composable(Rutas.SCANNER) {
             ScannerScreen()
         }
+
     }
 }
