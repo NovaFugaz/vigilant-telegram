@@ -12,6 +12,7 @@ import com.bexai.bexaiinventory.presentation.ui.view.BodegaMainScreen
 import com.bexai.bexaiinventory.presentation.ui.view.GerenciaMainScreen
 import com.bexai.bexaiinventory.presentation.ui.view.LoginScreen
 import com.bexai.bexaiinventory.presentation.ui.view.MainScreen
+import com.bexai.bexaiinventory.presentation.ui.view.ScannerScreen
 import com.bexai.bexaiinventory.presentation.ui.view.SeleccionSucursalScreen
 import com.bexai.bexaiinventory.presentation.ui.view.splashScreen
 
@@ -22,7 +23,7 @@ object Rutas {
     const val HOME_TERRENO = "home_terreno/{codigo}"
     const val HOME_BODEGA = "home_bodega/{codigo}"
     const val HOME_GERENCIA = "home_gerencia/{codigo}"
-
+    const val SCANNER = "scanner"
     fun seleccion(codigo: String) = "seleccion/$codigo"
 
     // Gerencia no pasa por jornada
@@ -95,6 +96,10 @@ fun AppNavigation() {
         // Gerencia (sin jornada)
         composable(Rutas.HOME_GERENCIA, arguments = argCodigo) {
             GerenciaMainScreen(onCerrarSesion = { cerrarSesion(navController) })
+        }
+
+        composable(Rutas.SCANNER) {
+            ScannerScreen()
         }
     }
 }
