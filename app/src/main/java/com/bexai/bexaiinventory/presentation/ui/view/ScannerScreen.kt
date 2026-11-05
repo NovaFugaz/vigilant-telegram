@@ -36,6 +36,7 @@ import com.bexai.bexaiinventory.presentation.ui.components.CameraPreview
 @Composable
 fun ScannerScreen(){
     val context = LocalContext.current
+    var codigoLeido by remember { mutableStateOf<String?>(null) }
 
     // Verificación de permisos
     var hasCameraPermission by remember {
@@ -101,7 +102,10 @@ fun ScannerScreen(){
                     // Placeholder
                     Column(modifier = Modifier.padding(16.dp)) {
                         // Debería gestionar esto por estado.
-                        Text("Producto: Esperando lectura", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = if (codigoLeido != null) "Código detectado: $codigoLeido" else "Producto: Esperando lectura",
+                            style = MaterialTheme.typography.titleMedium
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
                             onClick = { /* Por llenar (rectificar) */ },
