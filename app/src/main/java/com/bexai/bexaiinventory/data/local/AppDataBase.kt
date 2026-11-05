@@ -44,8 +44,8 @@ abstract class AppDataBase : RoomDatabase() {
                     AppDataBase::class.java,
                     "bexai_v2.db"
                 )
-                    .fallbackToDestructiveMigration(dropAllTables = true)
-                    .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+//                    .fallbackToDestructiveMigration(dropAllTables = true)
+//                    .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
                     .build().also { INSTANCIA = it }
             }
         }
