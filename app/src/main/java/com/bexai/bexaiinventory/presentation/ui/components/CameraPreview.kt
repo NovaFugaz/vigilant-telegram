@@ -5,7 +5,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.mlkit.vision.MlKitAnalyzer
-import androidx.camera.core.ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED
+import androidx.camera.core.ImageAnalysis.COORDINATE_SYSTEM_ORIGINAL
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -54,7 +54,7 @@ fun CameraPreview(
                             ContextCompat.getMainExecutor(ctx),
                             MlKitAnalyzer(
                                 listOf(barcodeScanner),
-                                COORDINATE_SYSTEM_VIEW_REFERENCED,
+                                COORDINATE_SYSTEM_ORIGINAL,
                                 ContextCompat.getMainExecutor(ctx)
                             ) { result ->
                                 val barcodeResults = result.getValue(barcodeScanner)
