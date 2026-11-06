@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,13 +31,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bexai.bexaiinventory.presentation.ui.components.CameraPreview
+import com.bexai.bexaiinventory.presentation.ui.components.NuevoProductoDialog
+import com.bexai.bexaiinventory.presentation.viewmodel.ScannerViewModel
 
 // te pasaste nacchi, al menos ira bien grupalmente
 @Composable
-fun ScannerScreen(){
+fun ScannerScreen(
+    viewModel: ScannerViewModel = viewModel()
+) {
     val context = LocalContext.current
-    var codigoLeido by remember { mutableStateOf<String?>(null) }
+    val uiState by viewModel.uiState.collectAsState()
 
     // Verificación de permisos
     var hasCameraPermission by remember {
@@ -62,20 +68,19 @@ fun ScannerScreen(){
         }
     }
 
-    // De tener, tiramos el resto de la UI acá
-
-    if (hasCameraPermission){
+    if (hasCameraPermission) {
         Box(Modifier.fillMaxSize()) {
-            // Llamamos al componente de preview de la cámara
-            CameraPreview(    onCodigoEscaneado = { codigoDetectado ->
-                codigoLeido = codigoDetectado
-            }
+            // Llamamos al componente de preview de la cámara con escáner automático
+            CameraPreview(
+                onCodigoEscaneado = { codigoDetectado ->
+                    viewModel.onCodigoEscaneado(codigoDetectado)
+                }
             )
 
-            // El resto de la interfaz.
-
+            // Interfaz de usuario (Overlay)
             Column(
-                Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(24.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -85,37 +90,74 @@ fun ScannerScreen(){
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text(
-                        "Enfoque el código de barras",
+                        text = "Alinee el código de barras o QR",
                         color = Color.White,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
                     )
                 }
-                // Tarjeta flotante inferior.
+
+                // Tarjeta flotante inferior con información del producto o QR detectado
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
                     )
                 ) {
-                    // Placeholder
                     Column(modifier = Modifier.padding(16.dp)) {
-                        // Debería gestionar esto por estado.
-                        Text(
-                            text = if (codigoLeido != null) "Código detectado: $codigoLeido" else "Producto: Esperando lectura",
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        val producto = uiState.productoEncontrado
+                        if (producto != null) {
+                            Text(
+                                text =  "Captura Exitosa",
+                                color = Color(0xFF166534),
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = producto.nombre, style = MaterialTheme.typography.titleMedium)
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "SKU: ${producto.sku} • Stock: ${producto.stockTienda} u. • Pasillo: ${producto.Ubicacion.pasillo}",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        } else if (uiState.codigoEscaneado != null) {
+                            Text(
+                                text = "QR Detectado: ${uiState.codigoEscaneado}",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Producto no registrado en sistema.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        } else {
+                            Text(
+                                text = "Esperando lectura de código QR...",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = { /* Por llenar (rectificar) */ },
+                            onClick = { /* Rectificar conteo */ },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text("Rectificar conteo")
                         }
                     }
                 }
+            }
 
+            // Diálogo emergente para registrar un nuevo producto cuando el QR no existe
+            if (uiState.mostrarDialogoNuevo && uiState.codigoEscaneado != null) {
+                NuevoProductoDialog(
+                    codigoQr = uiState.codigoEscaneado!!,
+                    onDismiss = { viewModel.cerrarDialogo() },
+                    onGuardar = { nombre, descripcion, stock, pasillo ->
+                        viewModel.guardarNuevoProducto(nombre, descripcion, stock, pasillo)
+                    }
+                )
             }
         }
     }

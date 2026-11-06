@@ -1,6 +1,7 @@
 package com.bexai.bexaiinventory.data.repository
 
 import com.bexai.bexaiinventory.data.local.dao.ProductoDao
+import com.bexai.bexaiinventory.data.local.entity.ProductoEntity
 import com.bexai.bexaiinventory.data.local.seed.MockData
 import com.bexai.bexaiinventory.data.mapper.toDomain
 import com.bexai.bexaiinventory.domain.model.Producto
@@ -24,5 +25,9 @@ class ProductoRepository @Inject constructor(
     }
     suspend fun buscarPorCodigo(codigo: String, sucursalId: Int): Producto? {
         return productoDao.buscarPorCodigo(codigo, sucursalId)?.toDomain()
+    }
+
+    suspend fun guardarProducto(productoEntity: ProductoEntity) {
+        productoDao.insertarProductos(listOf(productoEntity))
     }
 }
