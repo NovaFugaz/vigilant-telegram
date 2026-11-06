@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bexai.bexaiinventory.presentation.ui.components.CameraPreview
 import com.bexai.bexaiinventory.presentation.ui.components.NuevoProductoDialog
+import com.bexai.bexaiinventory.presentation.ui.components.RectificarConteoDialog
 import com.bexai.bexaiinventory.presentation.viewmodel.ScannerViewModel
 
 // te pasaste nacchi, al menos ira bien grupalmente
@@ -140,8 +141,9 @@ fun ScannerScreen(
 
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = { /* Rectificar conteo */ },
-                            modifier = Modifier.fillMaxWidth()
+                            onClick = { viewModel.abrirDialogoRectificar() },
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = uiState.productoEncontrado != null
                         ) {
                             Text("Rectificar conteo")
                         }
@@ -156,6 +158,16 @@ fun ScannerScreen(
                     onDismiss = { viewModel.cerrarDialogo() },
                     onGuardar = { nombre, descripcion, stock, pasillo ->
                         viewModel.guardarNuevoProducto(nombre, descripcion, stock, pasillo)
+                    }
+                )
+            }
+
+            if (uiState.mostrarDialogoRectificar && uiState.productoEncontrado != null) {
+                RectificarConteoDialog(
+                    producto = uiState.productoEncontrado!!,
+                    onDismiss = { viewModel.cerrarDialogoRectificar() },
+                    onConfirmarRectificacion = { nuevoStock, _ ->
+                        viewModel.rectificarStockProducto(uiState.productoEncontrado!!.sku, nuevoStock)
                     }
                 )
             }
