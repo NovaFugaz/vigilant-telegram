@@ -15,7 +15,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
 
 @Composable
 fun CameraPreview(
@@ -38,26 +40,33 @@ fun CameraPreview(
                     it.surfaceProvider = previewView.surfaceProvider
                 }
 
-                // 2. Configurar el escáner de ML Kit para QR y Códigos de barras
-                val barcodeScanner = BarcodeScanning.getClient()
-                val imageAnalysis = ImageAnalysis.Builder().build().also { analysis ->
-                    analysis.setAnalyzer(
-                        ContextCompat.getMainExecutor(ctx),
-                        MlKitAnalyzer(
-                            listOf(barcodeScanner),
-                            COORDINATE_SYSTEM_VIEW_REFERENCED,
-                            ContextCompat.getMainExecutor(ctx)
-                        ) { result ->
-                            val barcodeResults = result.getValue(barcodeScanner)
-                            val primerCodigo = barcodeResults?.firstOrNull()?.rawValue
+                // 2. Configuración agresiva de ML Kit para todos los formatos (QR, EAN-13, DataMatrix)
+                val options = BarcodeScannerOptions.Builder()
+                    .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
+                    .build()
+                val barcodeScanner = BarcodeScanning.getClient(options)
 
-                            if (!primerCodigo.isNullOrEmpty()) {
-                                // ¡Dispara la lectura del código QR/EAN detectado!
-                                onCodigoEscaneado(primerCodigo)
+                // 3. Estrategia de análisis rápido
+                val imageAnalysis = ImageAnalysis.Builder()
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build().also { analysis ->
+                        analysis.setAnalyzer(
+                            ContextCompat.getMainExecutor(ctx),
+                            MlKitAnalyzer(
+                                listOf(barcodeScanner),
+                                COORDINATE_SYSTEM_VIEW_REFERENCED,
+                                ContextCompat.getMainExecutor(ctx)
+                            ) { result ->
+                                val barcodeResults = result.getValue(barcodeScanner)
+                                val primerCodigo = barcodeResults?.firstOrNull()?.rawValue
+
+                                if (!primerCodigo.isNullOrEmpty()) {
+                                    onCodigoEscaneado(primerCodigo)
+                                }
                             }
-                        }
-                    )
-                }
+                        )
+                    }
+
 
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
