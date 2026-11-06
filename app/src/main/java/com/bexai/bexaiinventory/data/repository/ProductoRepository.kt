@@ -30,4 +30,8 @@ class ProductoRepository @Inject constructor(
     suspend fun guardarProducto(productoEntity: ProductoEntity) {
         productoDao.insertarProductos(listOf(productoEntity))
     }
+
+    suspend fun actualizarStock(sku: String, nuevoStock: Int) {
+        productoDao.actualizarStock(sku, nuevoStock)
+    }
 }

@@ -17,6 +17,7 @@ data class ScannerUiState(
     val codigoEscaneado: String? = null,
     val productoEncontrado: Producto? = null,
     val mostrarDialogoNuevo: Boolean = false,
+    val mostrarDialogoRectificar: Boolean = false,
     val mensajeExito: String? = null
 )
 
@@ -60,6 +61,32 @@ class ScannerViewModel(application: Application) : AndroidViewModel(application)
 
     fun cerrarDialogo() {
         _uiState.update { it.copy(mostrarDialogoNuevo = false) }
+    }
+
+    fun abrirDialogoRectificar() {
+        _uiState.update { it.copy(mostrarDialogoRectificar = true) }
+    }
+
+    fun cerrarDialogoRectificar() {
+        _uiState.update { it.copy(mostrarDialogoRectificar = false) }
+    }
+
+    fun rectificarStockProducto(sku: String, nuevoStock: Int) {
+        viewModelScope.launch {
+            // Actualizamos en la base de datos SQLite con Room
+            repository.actualizarStock(sku, nuevoStock)
+
+            // Refrescamos el producto en pantalla
+            val codigo = _uiState.value.codigoEscaneado ?: sku
+            val productoActualizado = repository.buscarPorCodigo(codigo, sucursalId = 1)
+
+            _uiState.update {
+                it.copy(
+                    productoEncontrado = productoActualizado,
+                    mostrarDialogoRectificar = false
+                )
+            }
+        }
     }
 
     fun guardarNuevoProducto(
