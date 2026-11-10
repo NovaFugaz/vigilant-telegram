@@ -1,8 +1,10 @@
 package com.bexai.bexaiinventory.data.local.seed
 
 import com.bexai.bexaiinventory.data.local.entity.AlertaEntity
+import com.bexai.bexaiinventory.data.local.entity.ConteoFisicoEntity
 import com.bexai.bexaiinventory.data.local.entity.MetricasJornadaEntity
 import com.bexai.bexaiinventory.data.local.entity.ProductoEntity
+import com.bexai.bexaiinventory.data.local.entity.SolicitudReposicionEntity
 import com.bexai.bexaiinventory.data.local.entity.TareaEntity
 import com.bexai.bexaiinventory.domain.model.AccionTarea
 import com.bexai.bexaiinventory.data.local.entity.Operador
@@ -170,4 +172,61 @@ object MockData {
         )
         else -> emptyList()   // bodega / gerencia no tienen tareas de terreno
     }
+
+    val conteosIniciales = listOf(
+        ConteoFisicoEntity(
+            id = 1,
+            sku = "SKU-7704219",
+            stockTeorico = 24,
+            conteoFisico = 21,
+            motivo = "Merma / Daño",
+            fechaIso = "2024-05-20",
+            sucursalId = 1
+        ),
+        ConteoFisicoEntity(
+            id = 2,
+            sku = "SKU-8841920",
+            stockTeorico = 8,
+            conteoFisico = 3,
+            motivo = "Error previo",
+            fechaIso = "2024-05-20",
+            sucursalId = 1
+        ),
+        ConteoFisicoEntity(
+            id = 3,
+            sku = "SKU-3361284",
+            stockTeorico = 25,
+            conteoFisico = 20,
+            motivo = "Traspaso no registrado",
+            fechaIso = "2024-05-19",
+            sucursalId = 1
+        )
+    )
+
+    val solicitudesIniciales = listOf(
+        SolicitudReposicionEntity(
+            id = 1,
+            sku = "SKU-3361284",
+            nombreProducto = "Disco de Corte Metal 4 1/2\" Norton (x10)",
+            cantidad = 30,
+            destino = "Bodega Central",
+            prioridad = "Urgente",
+            observacion = "Stock en quiebre total en bodega local",
+            estado = "Pendiente",
+            fechaIso = "2024-05-20",
+            sucursalId = 1
+        ),
+        SolicitudReposicionEntity(
+            id = 2,
+            sku = "SKU-8841920",
+            nombreProducto = "Taladro Percutor Inalámbrico 20V Dewalt",
+            cantidad = 15,
+            destino = "Proveedor Directo",
+            prioridad = "Normal",
+            observacion = "Stock actual (3 u.) bajo stock mínimo (8 u.)",
+            estado = "En Tránsito",
+            fechaIso = "2024-05-19",
+            sucursalId = 1
+        )
+    )
 }
