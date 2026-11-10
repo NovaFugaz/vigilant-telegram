@@ -5,23 +5,37 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.bexai.bexaiinventory.data.local.dao.AlertaDao
+import com.bexai.bexaiinventory.data.local.dao.ConteoFisicoDao
 import com.bexai.bexaiinventory.data.local.dao.JornadaDao
 import com.bexai.bexaiinventory.data.local.dao.MetricasJornadaDao
 import com.bexai.bexaiinventory.data.local.dao.OperadorDao
 import com.bexai.bexaiinventory.data.local.dao.ProductoDao
+import com.bexai.bexaiinventory.data.local.dao.SolicitudReposicionDao
 import com.bexai.bexaiinventory.data.local.dao.SucursalDao
 import com.bexai.bexaiinventory.data.local.dao.TareaDao
 import com.bexai.bexaiinventory.data.local.entity.AlertaEntity
+import com.bexai.bexaiinventory.data.local.entity.ConteoFisicoEntity
 import com.bexai.bexaiinventory.data.local.entity.Jornada
 import com.bexai.bexaiinventory.data.local.entity.MetricasJornadaEntity
 import com.bexai.bexaiinventory.data.local.entity.Operador
 import com.bexai.bexaiinventory.data.local.entity.ProductoEntity
+import com.bexai.bexaiinventory.data.local.entity.SolicitudReposicionEntity
 import com.bexai.bexaiinventory.data.local.entity.Sucursal
 import com.bexai.bexaiinventory.data.local.entity.TareaEntity
 
 @Database(
-    entities = [Operador::class, Sucursal::class, Jornada::class, ProductoEntity::class, AlertaEntity::class, TareaEntity::class, MetricasJornadaEntity::class],
-    version = 10, exportSchema = false
+    entities = [
+        Operador::class,
+        Sucursal::class,
+        Jornada::class,
+        ProductoEntity::class,
+        AlertaEntity::class,
+        TareaEntity::class,
+        MetricasJornadaEntity::class,
+        ConteoFisicoEntity::class,
+        SolicitudReposicionEntity::class
+    ],
+    version = 11, exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun operadorDao(): OperadorDao
@@ -31,6 +45,8 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun alertaDao(): AlertaDao
     abstract fun tareaDao(): TareaDao
     abstract fun metricasJornadaDao(): MetricasJornadaDao
+    abstract fun conteoFisicoDao(): ConteoFisicoDao
+    abstract fun solicitudReposicionDao(): SolicitudReposicionDao
 
     /* Android Studio fue creado y desarrollado por Google (basado en el entorno de código abierto IntelliJ IDEA de JetBrains) por favor boombardeen google  */
     companion object {
