@@ -1,6 +1,7 @@
 package com.bexai.bexaiinventory.presentation.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -17,6 +18,7 @@ fun FormTextField(
     placeholder: String? = null,
     error: String? = null,
     enabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ){
     OutlinedTextField(
@@ -31,6 +33,7 @@ fun FormTextField(
             if (error != null) Text(text = error, color = MaterialTheme.colorScheme.error)
         },
 
+        keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
         modifier = modifier.fillMaxWidth(),
         // este es para que no le hagan enter a los textfield

@@ -118,8 +118,17 @@ class ScannerViewModel(application: Application) : AndroidViewModel(application)
             // Guardamos en Room
             repository.guardarProducto(nuevoEntity)
 
-            // Actualizamos UI para mostrar que ahora ya existe el producto
-            onCodigoEscaneado(codigo, sucursalId)
+            // Buscamos el producto recién guardado para actualizar la UI
+            val productoGuardado = repository.buscarPorCodigo(codigo, sucursalId)
+
+            // Actualizamos la UI: cerramos el diálogo y mostramos el producto registrado
+            _uiState.update {
+                it.copy(
+                    productoEncontrado = productoGuardado,
+                    mostrarDialogoNuevo = false,
+                    mensajeExito = "Producto guardado exitosamente"
+                )
+            }
         }
     }
 }

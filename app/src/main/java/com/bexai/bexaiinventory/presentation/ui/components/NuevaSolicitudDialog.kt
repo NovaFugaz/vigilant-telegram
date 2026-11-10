@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bexai.bexaiinventory.domain.model.Producto
@@ -56,6 +58,12 @@ fun NuevaSolicitudDialog(
             selectedProducto?.let { "Pasillo ${it.Ubicacion.pasillo} - Zona ${it.Ubicacion.zona}" } ?: "Bodega Central"
         )
     }
+
+    var productoError by remember { mutableStateOf<String?>(null) }
+    var cantidadError by remember { mutableStateOf<String?>(null) }
+    var stockActualError by remember { mutableStateOf<String?>(null) }
+    var stockRequeridoError by remember { mutableStateOf<String?>(null) }
+    var ubicacionError by remember { mutableStateOf<String?>(null) }
 
     var expandedProductoDropdown by remember { mutableStateOf(false) }
 
@@ -88,6 +96,12 @@ fun NuevaSolicitudDialog(
                         onValueChange = {},
                         readOnly = true,
                         label = { Text("Producto") },
+                        isError = productoError != null,
+                        supportingText = {
+                            if (productoError != null) {
+                                Text(productoError!!, color = MaterialTheme.colorScheme.error)
+                            }
+                        },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedProductoDropdown) },
                         modifier = Modifier
                             .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
@@ -103,6 +117,7 @@ fun NuevaSolicitudDialog(
                                 text = { Text("${prod.sku} - ${prod.nombre}") },
                                 onClick = {
                                     selectedProducto = prod
+                                    productoError = null
                                     stockActualText = prod.stockTienda.toString()
                                     stockRequeridoText = prod.stockMinimo.toString()
                                     ubicacionText = "Pasillo ${prod.Ubicacion.pasillo} - Zona ${prod.Ubicacion.zona}"
@@ -117,8 +132,18 @@ fun NuevaSolicitudDialog(
                     // Formulario Solicitud
                     OutlinedTextField(
                         value = cantidadText,
-                        onValueChange = { cantidadText = it },
+                        onValueChange = { input ->
+                            cantidadText = input.filter { char -> char.isDigit() }
+                            if (cantidadText.isNotBlank()) cantidadError = null
+                        },
                         label = { Text("Cantidad requerida") },
+                        isError = cantidadError != null,
+                        supportingText = {
+                            if (cantidadError != null) {
+                                Text(cantidadError!!, color = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -159,24 +184,53 @@ fun NuevaSolicitudDialog(
                     // Formulario Alerta Manual
                     OutlinedTextField(
                         value = stockActualText,
-                        onValueChange = { stockActualText = it },
+                        onValueChange = { input ->
+                            stockActualText = input.filter { char -> char.isDigit() }
+                            if (stockActualText.isNotBlank()) stockActualError = null
+                        },
                         label = { Text("Stock Actual en Bodega") },
+                        isError = stockActualError != null,
+                        supportingText = {
+                            if (stockActualError != null) {
+                                Text(stockActualError!!, color = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
 
                     OutlinedTextField(
                         value = stockRequeridoText,
-                        onValueChange = { stockRequeridoText = it },
+                        onValueChange = { input ->
+                            stockRequeridoText = input.filter { char -> char.isDigit() }
+                            if (stockRequeridoText.isNotBlank()) stockRequeridoError = null
+                        },
                         label = { Text("Stock Mínimo Requerido") },
+                        isError = stockRequeridoError != null,
+                        supportingText = {
+                            if (stockRequeridoError != null) {
+                                Text(stockRequeridoError!!, color = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
 
                     OutlinedTextField(
                         value = ubicacionText,
-                        onValueChange = { ubicacionText = it },
+                        onValueChange = {
+                            ubicacionText = it
+                            if (it.isNotBlank()) ubicacionError = null
+                        },
                         label = { Text("Ubicación en Bodega") },
+                        isError = ubicacionError != null,
+                        supportingText = {
+                            if (ubicacionError != null) {
+                                Text(ubicacionError!!, color = MaterialTheme.colorScheme.error)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -193,16 +247,43 @@ fun NuevaSolicitudDialog(
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(
                         onClick = {
-                            val prod = selectedProducto ?: return@Button
-                            if (!esAlertaManual) {
-                                val cant = cantidadText.toIntOrNull() ?: 10
-                                onConfirmarSolicitud(prod.sku, prod.nombre, cant, destino, prioridad, observacion)
-                            } else {
-                                val actual = stockActualText.toIntOrNull() ?: 0
-                                val req = stockRequeridoText.toIntOrNull() ?: prod.stockMinimo
-                                onConfirmarAlerta(prod.sku, prod.nombre, actual, req, ubicacionText)
+                            val prod = selectedProducto
+                            if (prod == null) {
+                                productoError = "Debe seleccionar un producto"
+                                return@Button
                             }
-                            onDismiss()
+
+                            if (!esAlertaManual) {
+                                val cant = cantidadText.toIntOrNull()
+                                if (cant == null || cant <= 0) {
+                                    cantidadError = "Ingrese una cantidad válida mayor a 0"
+                                } else {
+                                    onConfirmarSolicitud(prod.sku, prod.nombre, cant, destino, prioridad, observacion)
+                                    onDismiss()
+                                }
+                            } else {
+                                val actual = stockActualText.toIntOrNull()
+                                val req = stockRequeridoText.toIntOrNull()
+                                var esValido = true
+
+                                if (actual == null || actual < 0) {
+                                    stockActualError = "Ingrese un valor de stock válido mayor a 0"
+                                    esValido = false
+                                }
+                                if (req == null || req <= 0) {
+                                    stockRequeridoError = "Ingrese un stock mínimo requerido mayor a 0"
+                                    esValido = false
+                                }
+                                if (ubicacionText.isBlank()) {
+                                    ubicacionError = "La ubicación no puede estar vacía"
+                                    esValido = false
+                                }
+
+                                if (esValido && actual != null && req != null) {
+                                    onConfirmarAlerta(prod.sku, prod.nombre, actual, req, ubicacionText.trim())
+                                    onDismiss()
+                                }
+                            }
                         }
                     ) {
                         Text(if (esAlertaManual) "Emitir Alerta" else "Enviar Solicitud")
