@@ -23,7 +23,8 @@ import com.bexai.bexaiinventory.presentation.ui.navigation.TabItem
 fun RoleScaffold(
     tabs: List<TabItem>, // lista de pestañas
     topBarActions: @Composable RowScope.() -> Unit, // para pasar botones o acciones al topbar
-    info: String? = null
+    info: String? = null,
+    content: @Composable (String) -> Unit = { route -> UnderConstructionScreen(title = route) }
 ) {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -68,8 +69,8 @@ fun RoleScaffold(
                 startDestination = tabs.first().route,
                 modifier = Modifier.weight(1f)
             ) {
-                tabs.forEach { tab -> // luego se cambia aqui el UnderConstruction .tab.algo()
-                    composable(tab.route) { UnderConstructionScreen(title = tab.title) }
+                tabs.forEach { tab ->
+                    composable(tab.route) { content(tab.route) }
                 }
             }
         }
