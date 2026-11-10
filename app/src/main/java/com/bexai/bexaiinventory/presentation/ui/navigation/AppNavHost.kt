@@ -37,8 +37,5 @@ fun AppNavHost (
       composable(Screen.Alertas.route) {
           AlertasScreen()
       }
-      composable(Screen.Auditoria.route) {
-          UnderConstructionScreen(title = "Auditoria")
-      }
     }
 }

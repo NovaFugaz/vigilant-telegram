@@ -15,12 +15,11 @@ sealed class Screen(
     object Inicio: Screen("inicio", "Inicio", Icons.Default.Home )
     object Stock: Screen("stock", "Stock",Icons.Default.Inventory2)
     object Alertas: Screen("alertas", "Alertas", Icons.Default.Notifications)
-    object Auditoria: Screen("auditoria", "Auditoria", Icons.AutoMirrored.Filled.ReceiptLong)
+
 }
 
 val items = listOf(
     Screen.Inicio,
     Screen.Stock,
-    Screen.Alertas,
-    Screen.Auditoria
+    Screen.Alertas
 )
