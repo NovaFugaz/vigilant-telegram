@@ -10,6 +10,7 @@ import com.bexai.bexaiinventory.domain.model.AccionTarea
 import com.bexai.bexaiinventory.data.local.entity.Operador
 import com.bexai.bexaiinventory.data.local.entity.Jornada
 import com.bexai.bexaiinventory.domain.model.Rol
+import com.bexai.bexaiinventory.domain.model.TipoTarea
 import com.bexai.bexaiinventory.domain.model.Turno
 
 // me wa permitir dejar esto acá :3
@@ -82,8 +83,6 @@ object MockData {
         )
     )
 
-    // Dentro de tu objeto MockData en data/local/seed/MockData.kt
-
     val alertasIniciales = listOf(
         AlertaEntity(
             id = "ALT-001",
@@ -147,28 +146,28 @@ object MockData {
         else      -> MetricasJornadaEntity(codigo, 0, 0, 0, 0, 0)     // bodega / gerencia
     }
 
-    private fun tarea(codigo: String, titulo: String, detalle: String, accion: AccionTarea) =
-        TareaEntity(operadorCodigo = codigo, titulo = titulo, detalle = detalle, accion = accion)
+    private fun tarea(codigo: String, titulo: String, detalle: String, accion: AccionTarea, tipo: TipoTarea) =
+        TareaEntity(operadorCodigo = codigo, titulo = titulo, detalle = detalle, accion = accion, tipo = tipo)
 
     fun tareasIniciales(codigo: String): List<TareaEntity> = when (codigo) {
         "OP-1001" -> listOf(
-            tarea(codigo, "Conteo Pasillo: C-03", "42 / 60 SKUs verificados", AccionTarea.CONTINUAR),
-            tarea(codigo, "Recontar Lote: #B892", "Discrepancia detectada (-3 u.)", AccionTarea.REVISAR),
-            tarea(codigo, "Recepción Pallet MP-104", "Muelle 2 · En espera de escaneo", AccionTarea.INICIAR)
+            tarea(codigo, "Conteo Pasillo: C-03", "42 / 60 SKUs verificados", AccionTarea.CONTINUAR, TipoTarea.CONTEO),
+            tarea(codigo, "Recontar Lote: #B892", "Discrepancia detectada (-3 u.)", AccionTarea.REVISAR, TipoTarea.RECONTEO),
+            tarea(codigo, "Recepción Pallet MP-104", "Muelle 2 · En espera de escaneo", AccionTarea.INICIAR, TipoTarea.RECEPCION)
         )
         "OP-1004" -> listOf(
-            tarea(codigo, "Conteo Pasillo: B-04", "31 / 45 SKUs verificados", AccionTarea.CONTINUAR),
-            tarea(codigo, "Revisar Lote: #D207", "7 SKUs pendientes de revisión", AccionTarea.REVISAR),
-            tarea(codigo, "Recepción Pallet MP-210", "Muelle 1 · En espera de escaneo", AccionTarea.INICIAR)
+            tarea(codigo, "Conteo Pasillo: B-04", "31 / 45 SKUs verificados", AccionTarea.CONTINUAR, TipoTarea.CONTEO),
+            tarea(codigo, "Revisar Lote: #D207", "7 SKUs pendientes de revisión", AccionTarea.REVISAR, TipoTarea.RECONTEO),
+            tarea(codigo, "Recepción Pallet MP-210", "Muelle 1 · En espera de escaneo", AccionTarea.INICIAR, TipoTarea.RECEPCION)
         )
         "OP-1005" -> listOf(
-            tarea(codigo, "Conteo Pasillo: A-02", "9 / 30 SKUs verificados", AccionTarea.CONTINUAR),
-            tarea(codigo, "Recontar Lote: #F118", "Discrepancia detectada (-1 u.)", AccionTarea.REVISAR)
+            tarea(codigo, "Conteo Pasillo: A-02", "9 / 30 SKUs verificados", AccionTarea.CONTINUAR, TipoTarea.CONTEO),
+            tarea(codigo, "Recontar Lote: #F118", "Discrepancia detectada (-1 u.)", AccionTarea.REVISAR, TipoTarea.RECONTEO)
         )
         "OP-1007" -> listOf(
-            tarea(codigo, "Conteo Pasillo: D-01", "0 / 38 SKUs verificados", AccionTarea.INICIAR),
-            tarea(codigo, "Conteo Pasillo: D-02", "0 / 52 SKUs verificados", AccionTarea.INICIAR),
-            tarea(codigo, "Recepción Pallet MP-305", "Muelle 3 · En espera de escaneo", AccionTarea.INICIAR)
+            tarea(codigo, "Conteo Pasillo: D-01", "0 / 38 SKUs verificados", AccionTarea.INICIAR, TipoTarea.CONTEO),
+            tarea(codigo, "Conteo Pasillo: D-02", "0 / 52 SKUs verificados", AccionTarea.INICIAR, TipoTarea.CONTEO),
+            tarea(codigo, "Recepción Pallet MP-305", "Muelle 3 · En espera de escaneo", AccionTarea.INICIAR, TipoTarea.RECEPCION)
         )
         else -> emptyList()   // bodega / gerencia no tienen tareas de terreno
     }

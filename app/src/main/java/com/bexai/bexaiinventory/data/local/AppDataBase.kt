@@ -35,7 +35,7 @@ import com.bexai.bexaiinventory.data.local.entity.TareaEntity
         ConteoFisicoEntity::class,
         SolicitudReposicionEntity::class
     ],
-    version = 11, exportSchema = false
+    version = 12, exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun operadorDao(): OperadorDao
