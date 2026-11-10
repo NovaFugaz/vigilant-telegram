@@ -93,6 +93,7 @@ fun AppNavigation() {
         composable(Rutas.HOME_BODEGA, arguments = argCodigo) {
             BodegaMainScreen(
                 onSinJornada = { cerrarSesion(navController) },
+                onAbrirEscaner = { navController.navigate(Rutas.SCANNER) }
             )
         }
 
