@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bexai.bexaiinventory.domain.model.Tarea
+import com.bexai.bexaiinventory.presentation.ui.components.AccesoRapidoCard
 import com.bexai.bexaiinventory.presentation.ui.components.MetricasCard
 import com.bexai.bexaiinventory.presentation.ui.components.PrimaryButton
 import com.bexai.bexaiinventory.presentation.ui.components.SeccionTitulo
@@ -25,6 +29,8 @@ import com.bexai.bexaiinventory.presentation.viewmodel.HomeOperadorViewModel
 fun HomeOperadorScreen(
     operadorCodigo: String,
     onAbrirScanner: () -> Unit = {},
+    onAbrirBusqueda: () -> Unit = {},
+    onAbrirConteo: () -> Unit = {},
     onTareaClick: (Tarea) -> Unit = {},
     viewModel: HomeOperadorViewModel = viewModel(
         key = operadorCodigo,
@@ -33,16 +39,15 @@ fun HomeOperadorScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val m = state.metricas
-    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // 1. MÉTRICAS
+        // MÉTRICAS
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             SeccionTitulo("Métricas de la jornada")
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -64,15 +69,31 @@ fun HomeOperadorScreen(
             }
         }
 
-        // 2. SCANNER
+        // ACCESOS RÁPIDOS
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            SeccionTitulo("Acceso al scanner")
-            PrimaryButton(text = "Abrir Escáner", onClick = onAbrirScanner, modifier = Modifier.fillMaxWidth())
+            SeccionTitulo("Accesos operativos rápidos")
+            PrimaryButton(
+                text = "Abrir Escáner",
+                onClick = onAbrirScanner,
+                modifier = Modifier.fillMaxWidth()
+            )
+            AccesoRapidoCard(
+                titulo = "Búsqueda e Ingreso Manual",
+                descripcion = "Para etiquetas rotas o no legibles",
+                icono = Icons.Default.Keyboard,
+                onClick = onAbrirBusqueda
+            )
+            AccesoRapidoCard(
+                titulo = "Conteo y Rectificación",
+                descripcion = "Ajustes directos de stock por pasillo",
+                icono = Icons.Default.Tune,
+                onClick = onAbrirConteo
+            )
         }
 
-        // 3. TAREAS
+        // TAREAS
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            SeccionTitulo("Tarea asignadas del turno")
+            SeccionTitulo("Tareas asignadas del turno")
             state.tareas.forEach { tarea ->
                 TareaCard(tarea = tarea, onClick = { onTareaClick(tarea) })
             }

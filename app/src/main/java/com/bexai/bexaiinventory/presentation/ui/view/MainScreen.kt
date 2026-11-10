@@ -29,6 +29,8 @@ import com.bexai.bexaiinventory.presentation.viewmodel.JornadaViewModel
 fun MainScreen(
     onSinJornada: () -> Unit,
     onAbrirEscaner: () -> Unit = {},
+    onAbrirBusqueda: () -> Unit = {},
+    onAbrirConteo: () -> Unit = {},
     jornadaViewModel: JornadaViewModel = viewModel()
 ) {
     val estado by jornadaViewModel.estado.collectAsState()
@@ -88,6 +90,8 @@ fun MainScreen(
                     navController = navController,
                     operadorCodigo = jornadaViewModel.codigo,
                     onAbrirEscaner = onAbrirEscaner,
+                    onAbrirBusqueda = onAbrirBusqueda,
+                    onAbrirConteo = onAbrirConteo,
                     modifier = Modifier.padding(innerPadding)
                 )
             }

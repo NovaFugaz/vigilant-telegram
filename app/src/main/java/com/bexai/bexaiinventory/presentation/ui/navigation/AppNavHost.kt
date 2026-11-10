@@ -16,6 +16,8 @@ fun AppNavHost (
     navController: NavHostController,
     operadorCodigo: String,
     onAbrirEscaner: () -> Unit = {},
+    onAbrirBusqueda: () -> Unit = {},
+    onAbrirConteo: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
     NavHost(
@@ -25,7 +27,9 @@ fun AppNavHost (
     ){
       composable(Screen.Inicio.route){
           HomeOperadorScreen(operadorCodigo = operadorCodigo,
-              onAbrirScanner = onAbrirEscaner)
+              onAbrirScanner = onAbrirEscaner,
+              onAbrirBusqueda = onAbrirBusqueda,
+              onAbrirConteo = onAbrirConteo)
       }
       composable(Screen.Stock.route) {
           StockCatalogScreen(onAbrirEscaner = onAbrirEscaner)
