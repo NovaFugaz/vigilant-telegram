@@ -9,6 +9,10 @@ import com.bexai.bexaiinventory.data.local.entity.TareaEntity
 import com.bexai.bexaiinventory.domain.model.AccionTarea
 import com.bexai.bexaiinventory.data.local.entity.Operador
 import com.bexai.bexaiinventory.data.local.entity.Jornada
+import com.bexai.bexaiinventory.domain.model.BalanceAnioVsMes
+import com.bexai.bexaiinventory.domain.model.CapacidadCentro
+import com.bexai.bexaiinventory.domain.model.ReporteGerencialSummary
+import com.bexai.bexaiinventory.domain.model.ReporteItemTienda
 import com.bexai.bexaiinventory.domain.model.Rol
 import com.bexai.bexaiinventory.domain.model.TipoTarea
 import com.bexai.bexaiinventory.domain.model.Turno
@@ -228,4 +232,90 @@ object MockData {
             sucursalId = 1
         )
     )
+
+    // Datos iniciales de Gerencia
+    val summaryGerencialInicial = ReporteGerencialSummary(
+        valorStockTotal = 148420000.0,
+        capacidadStockUnidades = 20000,
+        unidadesRedTotales = 34850,
+        capacidadRedTotales = 41900,
+        sucursalesActivas = 4,
+        porcentajeOcupacionRed = 83,
+        porcentajeCuadratura = 96.8,
+        variacionCuadratura = 1.8,
+        metaCuadratura = 95.0,
+        alertasCriticasCount = 5,
+        alertasQuiebresCount = 2
+    )
+
+    val capacidadesCentrosIniciales = listOf(
+        CapacidadCentro(1, "CD Pudahuel (Hub Central)", 14800, 16000, 92, "#EA580C"),
+        CapacidadCentro(2, "Santiago Centro Express", 8120, 10000, 81, "#16A34A"),
+        CapacidadCentro(3, "Sucursal Viña del Mar", 6930, 8500, 81, "#16A34A"),
+        CapacidadCentro(4, "Sucursal Concepción Sur", 5000, 7400, 67, "#64748B")
+    )
+
+    val reporteTiendasIniciales = listOf(
+        ReporteItemTienda(
+            sucursalId = 1,
+            nombreTienda = "CD Pudahuel (Hub Central)",
+            valorStock = 68400000.0,
+            unidadesStock = 14800,
+            valorMermas = 1250000.0,
+            cantidadMermas = 18,
+            porcentajeDescalce = 1.4,
+            montoDescalce = 950000.0,
+            quiebresCount = 0
+        ),
+        ReporteItemTienda(
+            sucursalId = 2,
+            nombreTienda = "Santiago Centro Express",
+            valorStock = 38500000.0,
+            unidadesStock = 8120,
+            valorMermas = 890000.0,
+            cantidadMermas = 12,
+            porcentajeDescalce = 3.2,
+            montoDescalce = 1230000.0,
+            quiebresCount = 1
+        ),
+        ReporteItemTienda(
+            sucursalId = 3,
+            nombreTienda = "Sucursal Viña del Mar",
+            valorStock = 26200000.0,
+            unidadesStock = 6930,
+            valorMermas = 450000.0,
+            cantidadMermas = 6,
+            porcentajeDescalce = 2.1,
+            montoDescalce = 550000.0,
+            quiebresCount = 1
+        ),
+        ReporteItemTienda(
+            sucursalId = 4,
+            nombreTienda = "Sucursal Concepción Sur",
+            valorStock = 15320000.0,
+            unidadesStock = 5000,
+            valorMermas = 310000.0,
+            cantidadMermas = 4,
+            porcentajeDescalce = 1.8,
+            montoDescalce = 275000.0,
+            quiebresCount = 0
+        )
+    )
+
+    val balanceAnioVsMesInicial = BalanceAnioVsMes(
+        mesActualValorStock = 148420000.0,
+        mesAnteriorValorStock = 139500000.0,
+        anioActualValorStock = 1620000000.0,
+        variacionMesPorcentaje = 6.39,
+        variacionAnioPorcentaje = 12.4
+    )
+
+    val sucursalesGerencia = listOf(
+        "Todas las Sucursales (4 activas)",
+        "CD Pudahuel (Hub Central)",
+        "Santiago Centro Express",
+        "Sucursal Viña del Mar",
+        "Sucursal Concepción Sur"
+    )
+
 }
