@@ -21,6 +21,7 @@ import java.io.File
 data class GerenciaUiState(
     val selectedFiltroTiempo: String = "Hoy (Vivo)", // "Hoy (Vivo)", "Semana", "Mes"
     val selectedSucursalNombre: String = "Todas las Sucursales (4 activas)",
+    val sucursalesDisponibles: List<String> = MockData.sucursalesGerencia,
     val summary: ReporteGerencialSummary = MockData.summaryGerencialInicial,
     val capacidades: List<CapacidadCentro> = MockData.capacidadesCentrosIniciales,
     val tiendasReportes: List<ReporteItemTienda> = MockData.reporteTiendasIniciales,
@@ -75,6 +76,28 @@ class GerenciaViewModel(application: Application) : AndroidViewModel(application
 
     fun onSucursalChange(sucursalNombre: String) {
         _uiState.update { it.copy(selectedSucursalNombre = sucursalNombre) }
+    }
+
+    fun recargarDatos(context: Context) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(cargando = true) }
+            kotlinx.coroutines.delay(600) // Simular latencia
+
+            repository.obtenerSummaryGerencial().collect { summary ->
+                _uiState.update { it.copy(summary = summary) }
+            }
+            repository.obtenerCapacidadCentros().collect { capacidades ->
+                _uiState.update { it.copy(capacidades = capacidades) }
+            }
+            repository.obtenerReporteTiendas().collect { tiendas ->
+                _uiState.update { it.copy(tiendasReportes = tiendas, cargando = false) }
+            }
+            repository.obtenerBalanceAnioVsMes().collect { balance ->
+                _uiState.update { it.copy(balance = balance) }
+            }
+
+            _uiState.update { it.copy(mensajeNotificacion = "Sincronizado") }
+        }
     }
 
     fun exportarTableroPdf(context: Context) {
