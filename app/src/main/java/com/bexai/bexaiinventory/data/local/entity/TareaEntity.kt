@@ -3,6 +3,7 @@ package com.bexai.bexaiinventory.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bexai.bexaiinventory.domain.model.AccionTarea
+import com.bexai.bexaiinventory.domain.model.TipoTarea
 
 @Entity(tableName = "tareas")
 data class TareaEntity(
@@ -10,5 +11,6 @@ data class TareaEntity(
     val operadorCodigo: String,
     val titulo: String,
     val detalle: String,
-    val accion: AccionTarea
+    val accion: AccionTarea,
+    val tipo: TipoTarea
 )

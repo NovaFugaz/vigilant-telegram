@@ -17,13 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bexai.bexaiinventory.domain.model.Tarea
 import com.bexai.bexaiinventory.presentation.ui.components.AccesoRapidoCard
 import com.bexai.bexaiinventory.presentation.ui.components.MetricasCard
 import com.bexai.bexaiinventory.presentation.ui.components.PrimaryButton
 import com.bexai.bexaiinventory.presentation.ui.components.SeccionTitulo
 import com.bexai.bexaiinventory.presentation.ui.components.TareaCard
 import com.bexai.bexaiinventory.presentation.viewmodel.HomeOperadorViewModel
+import com.bexai.bexaiinventory.domain.model.TipoTarea
 
 @Composable
 fun HomeOperadorScreen(
@@ -31,7 +31,6 @@ fun HomeOperadorScreen(
     onAbrirScanner: () -> Unit = {},
     onAbrirBusqueda: () -> Unit = {},
     onAbrirConteo: () -> Unit = {},
-    onTareaClick: (Tarea) -> Unit = {},
     viewModel: HomeOperadorViewModel = viewModel(
         key = operadorCodigo,
         factory = HomeOperadorViewModel.factory(operadorCodigo)
@@ -95,7 +94,13 @@ fun HomeOperadorScreen(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             SeccionTitulo("Tareas asignadas del turno")
             state.tareas.forEach { tarea ->
-                TareaCard(tarea = tarea, onClick = { onTareaClick(tarea) })
+                TareaCard(tarea = tarea, onClick = {
+                    when (tarea.tipo) {
+                        TipoTarea.CONTEO,
+                        TipoTarea.RECONTEO -> onAbrirConteo()
+                        TipoTarea.RECEPCION -> onAbrirScanner()
+                    }
+                })
             }
         }
     }

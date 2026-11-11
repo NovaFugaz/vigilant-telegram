@@ -17,5 +17,6 @@ fun TareaEntity.toDomain() = Tarea(
     id = id,
     titulo = titulo,
     detalle = detalle,
-    accion = accion
+    accion = accion,
+    tipo = tipo
 )

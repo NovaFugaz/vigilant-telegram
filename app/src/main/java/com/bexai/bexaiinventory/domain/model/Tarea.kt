@@ -4,5 +4,6 @@ data class Tarea(
     val id: Int,
     val titulo: String,
     val detalle: String,
-    val accion: AccionTarea
+    val accion: AccionTarea,
+    val tipo: TipoTarea
 )
