@@ -311,4 +311,12 @@ object MockData {
         variacionAnioPorcentaje = 12.4
     )
 
+    val sucursalesGerencia = listOf(
+        "Todas las Sucursales (4 activas)",
+        "CD Pudahuel (Hub Central)",
+        "Santiago Centro Express",
+        "Sucursal Viña del Mar",
+        "Sucursal Concepción Sur"
+    )
+
 }
