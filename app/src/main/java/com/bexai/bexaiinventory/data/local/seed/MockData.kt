@@ -303,6 +303,12 @@ object MockData {
         )
     )
 
-    val balanceAnioVsMesInicial = BalanceAnioVsMes()
+    val balanceAnioVsMesInicial = BalanceAnioVsMes(
+        mesActualValorStock = 148420000.0,
+        mesAnteriorValorStock = 139500000.0,
+        anioActualValorStock = 1620000000.0,
+        variacionMesPorcentaje = 6.39,
+        variacionAnioPorcentaje = 12.4
+    )
 
 }
