@@ -1,17 +1,7 @@
 package com.bexai.bexaiinventory.presentation.ui.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.bexai.bexaiinventory.presentation.ui.components.ActionSalida
-import com.bexai.bexaiinventory.presentation.ui.components.TopBar
 import com.bexai.bexaiinventory.presentation.ui.navigation.tabsGerencia
 
 @Composable
@@ -24,8 +14,17 @@ fun GerenciaMainScreen(onCerrarSesion: () -> Unit) {
                 titulo = "¿Cerrar sesión?",
                 mensaje = "Volverás a la pantalla de inicio de sesión.",
                 textoConfirmar = "Cerrar sesión",
-                onConfirmar = onCerrarSesion
+                onConfirmar = onCerrarSesion,
             )
         }
-    )
+    ) { route ->
+        when (route) {
+            "gerencia_tablero" -> GerenciaTableroScreen()
+            "gerencia_reportes" -> GerenciaReportesScreen()
+            "gerencia_alertas" -> AlertasScreen()
+            "gerencia_tiendas" -> GerenciaReportesScreen()
+            "gerencia_auditoria" -> DiferenciasBodegaScreen()
+            else -> UnderConstructionScreen(title = route)
+        }
+    }
 }
