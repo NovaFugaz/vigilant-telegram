@@ -92,12 +92,15 @@ dependencies {
 
     // Testing Stack (JUnit 5, Kotest, MockK, Turbine, Coroutines-Test, Robolectric)
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.vintage)
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.mockk)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
 
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.kotlinx.coroutines.test)
