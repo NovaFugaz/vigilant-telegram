@@ -13,10 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = OperadorRepository(
+class LoginViewModel(
+    application: Application,
+    private val repository: OperadorRepository = OperadorRepository(
         AppDataBase.getDatabase(application).operadorDao()
     )
+) : AndroidViewModel(application) {
     private val _uiState = MutableStateFlow(LoginModel())
     val uiState: StateFlow<LoginModel> = _uiState.asStateFlow()
 
