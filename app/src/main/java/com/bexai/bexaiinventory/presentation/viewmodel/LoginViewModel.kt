@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel(
+class LoginViewModel @JvmOverloads constructor(
     application: Application,
     private val repository: OperadorRepository = OperadorRepository(
         AppDataBase.getDatabase(application).operadorDao()
